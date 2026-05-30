@@ -10,6 +10,10 @@ Built for product folks and engineers who want to understand (or share) *how* a 
 
 *The picker. Sessions grouped by project, each card showing the token chip at upper-right and the vibes (sentiment markers) detected in user-prompt text. The "Vibes" facet row lets you filter sessions by emotional shape — find the frustrated ones, the breakthrough ones, the regret-heavy ones. Mock data shown — your real sessions populate from `~/.claude/projects/`.*
 
+![Session detail — vibes filter, jump-to-marker, arc visualization](./public/screenshots/02-session-detail.svg)
+
+*The detail view. Transcript on the left with per-event marker badges. The Vibes filter row at the top lets you narrow the transcript to specific categories and jump between matches. Stage panel in the center shows the current event with detected markers called out. The timeline scrubber surfaces marker positions across the whole session so you can see the emotional shape at a glance.*
+
 ---
 
 ## What you get
@@ -113,7 +117,7 @@ A session that looks expensive on totals often turns out to be mostly cache read
 
 ## Vibes — sentiment markers
 
-The viewer scans your *user-prompt* text (not Claude's responses) for five categories of marker, displays them on the picker, and lets you filter by them:
+The viewer scans your *user-prompt* text (not Claude's responses) for eight categories of marker, displays them on the picker and inside each session's transcript, and lets you filter by them:
 
 | Marker | What it catches |
 |---|---|
@@ -122,10 +126,15 @@ The viewer scans your *user-prompt* text (not Claude's responses) for five categ
 | 💡 **breakthrough** | "got it", "finally", "that works", "nailed it", "there we go" |
 | 🎉 **celebration** | "amazing", "beautiful", "love it", "perfect", "awesome" |
 | 😬 **regret** | "actually no", "scratch that", "wait wrong", "my bad", "let me revert" |
+| ⚡ **decision** | "let's go with", "ship it", "going with", "the call is", "let's commit" |
+| 🔀 **redirect** | "let's pivot", "different approach", "actually let's", "new direction" |
+| 🙏 **gratitude** | "thanks", "appreciate", "nice catch", "good call", "well done" |
 
 All detection is local — the regex sets live in [`lib/markers.ts`](./lib/markers.ts). Conservative by design: word-bounded curses, specific phrases for the non-curse categories. Sarcasm ("great", "wonderful") is deliberately not caught — too ambiguous.
 
 Each session card surfaces matched categories as small badges. Hover for the detected sample phrases. The "Vibes" facet row at the top of the picker lets you filter to sessions where a given category fired. The search bar also matches against detected marker text — so typing `wtf` or `got it` finds the sessions where you said those things.
+
+Inside a session, the transcript shows the same marker badges next to each event that triggered them. A Vibes filter row above the transcript lets you narrow to specific categories and jump between matches — useful in long sessions where you want to skip straight to the frustration moments or the breakthrough turns.
 
 Two uses for this:
 

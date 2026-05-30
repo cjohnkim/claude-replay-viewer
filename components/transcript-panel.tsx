@@ -5,6 +5,7 @@ import { EventIcon, eventMeta } from "./event-icon";
 import { Badge } from "./ui/badge";
 import { cn, formatClock } from "@/lib/utils";
 import { ChevronRight, Search } from "lucide-react";
+import { MARKER_CATEGORIES, MARKER_META, type MarkerCategory } from "@/lib/markers";
 
 interface Props {
   session: Session;
@@ -24,7 +25,22 @@ export function TranscriptPanel({
   onSearchChange,
 }: Props) {
   const [expanded, setExpanded] = React.useState<Record<string, boolean>>({});
+  const [markerFilter, setMarkerFilter] = React.useState<Set<MarkerCategory>>(new Set());
   const itemRefs = React.useRef<Record<string, HTMLButtonElement | null>>({});
+
+  // Build a lookup: event id -> ordered list of marker categories it triggered.
+  const eventMarkers = React.useMemo(() => {
+    const map: Record<string, MarkerCategory[]> = {};
+    if (!session.markers) return map;
+    for (const c of MARKER_CATEGORIES) {
+      const cats = session.markers[c];
+      if (!cats) continue;
+      for (const eid of cats.eventIds) {
+        (map[eid] ??= []).push(c);
+      }
+    }
+    return map;
+  }, [session.markers]);
 
   React.useEffect(() => {
     const ev = session.events[selectedIndex];
@@ -33,13 +49,55 @@ export function TranscriptPanel({
     el?.scrollIntoView({ behavior: "smooth", block: "nearest" });
   }, [selectedIndex, session.events]);
 
+  const toggleMarker = React.useCallback((c: MarkerCategory) => {
+    setMarkerFilter((prev) => {
+      const next = new Set(prev);
+      if (next.has(c)) next.delete(c);
+      else next.add(c);
+      return next;
+    });
+  }, []);
+
+  /** Jump to the next event matching any of the selected marker categories. */
+  const jumpToNextMarker = React.useCallback((cats: Set<MarkerCategory>) => {
+    if (cats.size === 0) return;
+    const start = selectedIndex + 1;
+    for (let i = 0; i < session.events.length; i++) {
+      const idx = (start + i) % session.events.length;
+      const ev = session.events[idx];
+      const evCats = eventMarkers[ev.id];
+      if (!evCats) continue;
+      if (evCats.some((c) => cats.has(c))) {
+        onSelect(idx);
+        return;
+      }
+    }
+  }, [selectedIndex, session.events, eventMarkers, onSelect]);
+
   const lower = search.trim().toLowerCase();
   const visible = session.events.filter((e) => {
     if (filterTypes.size > 0 && !filterTypes.has(e.type)) return false;
+    if (markerFilter.size > 0) {
+      const cats = eventMarkers[e.id];
+      if (!cats) return false;
+      if (!cats.some((c) => markerFilter.has(c))) return false;
+    }
     if (!lower) return true;
     const hay = [e.title, e.description ?? "", e.content ?? ""].join(" ").toLowerCase();
     return hay.includes(lower);
   });
+
+  // Counts of events per marker category in this session.
+  const markerCounts = React.useMemo(() => {
+    const out: Record<MarkerCategory, number> = {
+      frustration: 0, confusion: 0, breakthrough: 0, celebration: 0, regret: 0,
+      decision: 0, redirect: 0, gratitude: 0,
+    };
+    for (const c of MARKER_CATEGORIES) out[c] = session.markers?.[c]?.eventIds.length ?? 0;
+    return out;
+  }, [session.markers]);
+
+  const hasAnyMarkers = MARKER_CATEGORIES.some((c) => markerCounts[c] > 0);
 
   return (
     <div className="flex h-full flex-col">
@@ -62,6 +120,52 @@ export function TranscriptPanel({
           />
         </label>
       </div>
+
+      {hasAnyMarkers && (
+        <div className="flex flex-wrap items-center gap-1 border-b border-line bg-bg-panel/40 px-3 py-2">
+          <span className="mr-1 text-[9.5px] uppercase tracking-widest text-ink-faint">Vibes</span>
+          {MARKER_CATEGORIES.map((c) => {
+            const n = markerCounts[c];
+            if (n === 0) return null;
+            const meta = MARKER_META[c];
+            const active = markerFilter.has(c);
+            return (
+              <button
+                key={c}
+                type="button"
+                onClick={() => toggleMarker(c)}
+                title={`${meta.label} — ${n} event${n === 1 ? "" : "s"}. Click to filter.`}
+                className={cn(
+                  "inline-flex items-center gap-1 rounded-full border px-2 py-0.5 text-[10.5px] transition-colors",
+                  active
+                    ? "border-accent/60 bg-accent/15 text-accent-glow"
+                    : "border-line bg-bg-panel text-ink-muted hover:border-line-strong hover:text-ink"
+                )}
+              >
+                <span>{meta.emoji}</span>
+                <span className="font-medium">{n}</span>
+              </button>
+            );
+          })}
+          {markerFilter.size > 0 && (
+            <>
+              <button
+                onClick={() => jumpToNextMarker(markerFilter)}
+                title="Jump to next event matching the selected vibes"
+                className="ml-1 inline-flex items-center gap-1 rounded-full border border-line bg-bg-panel px-2 py-0.5 text-[10.5px] text-ink-muted hover:border-accent/40 hover:text-ink"
+              >
+                next ↓
+              </button>
+              <button
+                onClick={() => setMarkerFilter(new Set())}
+                className="ml-1 text-[10.5px] text-ink-faint hover:text-ink"
+              >
+                clear
+              </button>
+            </>
+          )}
+        </div>
+      )}
 
       <div className="scroll-fade-y flex-1 overflow-y-auto px-2 py-3">
         <ol className="relative space-y-1.5">
@@ -103,6 +207,19 @@ export function TranscriptPanel({
                       <span>#{ev.sequenceNumber.toString().padStart(2, "0")}</span>
                       <span>·</span>
                       <span>{formatClock(ev.timestamp)}</span>
+                      {eventMarkers[ev.id]?.length > 0 && (
+                        <span className="flex items-center gap-0.5">
+                          {eventMarkers[ev.id].map((c) => (
+                            <span
+                              key={c}
+                              title={MARKER_META[c].label}
+                              className="text-[12px] leading-none"
+                            >
+                              {MARKER_META[c].emoji}
+                            </span>
+                          ))}
+                        </span>
+                      )}
                     </span>
                     {showBody && (
                       <div className="mt-1.5 text-[12px] text-ink-muted">

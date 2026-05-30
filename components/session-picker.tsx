@@ -47,6 +47,7 @@ export function SessionPicker({ groups }: Props) {
   const markerCounts = React.useMemo(() => {
     const out: Record<MarkerCategory, number> = {
       frustration: 0, confusion: 0, breakthrough: 0, celebration: 0, regret: 0,
+      decision: 0, redirect: 0, gratitude: 0,
     };
     for (const g of groups) {
       for (const s of g.sessions) {

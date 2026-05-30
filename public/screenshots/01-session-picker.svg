@@ -90,8 +90,29 @@
       <text x="524" y="12" font-size="11" font-weight="500" class="ink-muted">regret</text>
       <text x="572" y="12" font-size="10" class="ink-faint">9</text>
 
+      <!-- decision -->
+      <rect x="594" y="0" width="98" height="22" rx="11" class="bg-panel"/>
+      <rect x="594" y="0" width="98" height="22" rx="11" class="ln"/>
+      <text x="604" y="12" font-size="11">⚡</text>
+      <text x="622" y="12" font-size="11" font-weight="500" class="ink-muted">decision</text>
+      <text x="678" y="12" font-size="10" class="ink-faint">7</text>
+
+      <!-- redirect -->
+      <rect x="700" y="0" width="100" height="22" rx="11" class="bg-panel"/>
+      <rect x="700" y="0" width="100" height="22" rx="11" class="ln"/>
+      <text x="710" y="12" font-size="11">🔀</text>
+      <text x="728" y="12" font-size="11" font-weight="500" class="ink-muted">redirect</text>
+      <text x="785" y="12" font-size="10" class="ink-faint">4</text>
+
+      <!-- gratitude -->
+      <rect x="808" y="0" width="106" height="22" rx="11" class="bg-panel"/>
+      <rect x="808" y="0" width="106" height="22" rx="11" class="ln"/>
+      <text x="818" y="12" font-size="11">🙏</text>
+      <text x="836" y="12" font-size="11" font-weight="500" class="ink-muted">gratitude</text>
+      <text x="898" y="12" font-size="10" class="ink-faint">13</text>
+
       <!-- clear vibes -->
-      <text x="600" y="12" font-size="11" class="ink-faint">clear vibes</text>
+      <text x="928" y="12" font-size="11" class="ink-faint">clear vibes</text>
     </g>
   </g>
 

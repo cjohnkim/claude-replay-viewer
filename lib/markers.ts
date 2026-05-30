@@ -17,7 +17,10 @@ export type MarkerCategory =
   | "confusion"
   | "breakthrough"
   | "celebration"
-  | "regret";
+  | "regret"
+  | "decision"
+  | "redirect"
+  | "gratitude";
 
 export const MARKER_META: Record<
   MarkerCategory,
@@ -47,6 +50,21 @@ export const MARKER_META: Record<
     label: "regret",
     emoji: "😬",
     description: "Actually-no, scratch-that, revert moments",
+  },
+  decision: {
+    label: "decision",
+    emoji: "⚡",
+    description: "Let's-go-with, ship-it, commit moments",
+  },
+  redirect: {
+    label: "redirect",
+    emoji: "🔀",
+    description: "Pivot, change-direction, different-approach moments",
+  },
+  gratitude: {
+    label: "gratitude",
+    emoji: "🙏",
+    description: "Thanks, appreciate, nice-work moments",
   },
 };
 
@@ -126,12 +144,59 @@ const REGRET_REGEXES: RegExp[] = [
   /\blet['’]?s try (again|a different|something else)\b/gi,
 ];
 
+const DECISION_REGEXES: RegExp[] = [
+  /\blet['’]?s go with\b/gi,
+  /\bgoing with\b/gi,
+  /\bi['’]?(ve|m| have) decid(ed|ing)\b/gi,
+  /\bthe (call|move|decision) is\b/gi,
+  /\bship it\b/gi,
+  /\blet['’]?s ship\b/gi,
+  /\bwe['’]?ll (do|go with|use|pick)\b/gi,
+  /\bdecision:?\b/gi,
+  /\blet['’]?s commit\b/gi,
+  /\bcommit(ting)? to\b/gi,
+  /\blet['’]?s do (it|that|this)\b/gi,
+  /\bok(ay)?,? let['’]?s\b/gi,
+  /\bgo with (option )?[a-z]\b/gi,
+];
+
+const REDIRECT_REGEXES: RegExp[] = [
+  /\blet['’]?s pivot\b/gi,
+  /\bactually,? let['’]?s\b/gi,
+  /\bchange (of )?direction\b/gi,
+  /\bdifferent approach\b/gi,
+  /\binstead,? let['’]?s\b/gi,
+  /\blet['’]?s switch\b/gi,
+  /\bnew direction\b/gi,
+  /\bforget (that|this|it)\b/gi,
+  /\bnew plan\b/gi,
+  /\bchange the plan\b/gi,
+  /\blet['’]?s try (something|a) (different|new)\b/gi,
+  /\bback up\b/gi,
+  /\bzoom out\b/gi,
+];
+
+const GRATITUDE_REGEXES: RegExp[] = [
+  /\bthank(s| you)\b/gi,
+  /\bappreciate\b/gi,
+  /\bnice (work|job|catch)\b/gi,
+  /\bthat['’]?s helpful\b/gi,
+  /\bsuper helpful\b/gi,
+  /\bgood (catch|work|call|find)\b/gi,
+  /\bgreat (work|catch|job|call)\b/gi,
+  /\bwell done\b/gi,
+  /\bmuch better\b/gi,
+];
+
 const CATEGORY_REGEXES: Record<MarkerCategory, RegExp[]> = {
   frustration: FRUSTRATION_REGEXES,
   confusion: CONFUSION_REGEXES,
   breakthrough: BREAKTHROUGH_REGEXES,
   celebration: CELEBRATION_REGEXES,
   regret: REGRET_REGEXES,
+  decision: DECISION_REGEXES,
+  redirect: REDIRECT_REGEXES,
+  gratitude: GRATITUDE_REGEXES,
 };
 
 export interface MarkerHit {
@@ -147,6 +212,9 @@ export function scoreMarkers(text: string): Record<MarkerCategory, MarkerHit> {
     breakthrough: { count: 0, samples: [] },
     celebration: { count: 0, samples: [] },
     regret: { count: 0, samples: [] },
+    decision: { count: 0, samples: [] },
+    redirect: { count: 0, samples: [] },
+    gratitude: { count: 0, samples: [] },
   };
   if (!text) return out;
 
@@ -182,4 +250,7 @@ export const MARKER_CATEGORIES: MarkerCategory[] = [
   "breakthrough",
   "celebration",
   "regret",
+  "decision",
+  "redirect",
+  "gratitude",
 ];
