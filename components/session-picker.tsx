@@ -4,6 +4,7 @@ import Link from "next/link";
 import type { Session, Project } from "@/lib/types";
 import { GitBranch, Search, ArrowRight, Clock, Files, FlagTriangleRight, Hash, Calendar, Zap, type LucideIcon } from "lucide-react";
 import { cn, formatRelativeTime } from "@/lib/utils";
+import { MARKER_CATEGORIES, MARKER_META, type MarkerCategory } from "@/lib/markers";
 
 interface Props {
   groups: { project: Project; sessions: Session[] }[];
@@ -12,6 +13,7 @@ interface Props {
 export function SessionPicker({ groups }: Props) {
   const [query, setQuery] = React.useState("");
   const [selectedTags, setSelectedTags] = React.useState<Set<string>>(new Set());
+  const [selectedMarkers, setSelectedMarkers] = React.useState<Set<MarkerCategory>>(new Set());
   const lower = query.trim().toLowerCase();
 
   const allTags = React.useMemo(() => {
@@ -33,6 +35,29 @@ export function SessionPicker({ groups }: Props) {
     });
   }, []);
 
+  const toggleMarker = React.useCallback((m: MarkerCategory) => {
+    setSelectedMarkers((prev) => {
+      const next = new Set(prev);
+      if (next.has(m)) next.delete(m);
+      else next.add(m);
+      return next;
+    });
+  }, []);
+
+  const markerCounts = React.useMemo(() => {
+    const out: Record<MarkerCategory, number> = {
+      frustration: 0, confusion: 0, breakthrough: 0, celebration: 0, regret: 0,
+    };
+    for (const g of groups) {
+      for (const s of g.sessions) {
+        for (const c of MARKER_CATEGORIES) {
+          if ((s.markers?.[c]?.count ?? 0) > 0) out[c] += 1;
+        }
+      }
+    }
+    return out;
+  }, [groups]);
+
   const filteredGroups = groups
     .map((g) => ({
       project: g.project,
@@ -43,18 +68,30 @@ export function SessionPicker({ groups }: Props) {
           for (const t of sTags) if (selectedTags.has(t)) { match = true; break; }
           if (!match) return false;
         }
+        if (selectedMarkers.size > 0) {
+          let any = false;
+          for (const m of selectedMarkers) {
+            if ((s.markers?.[m]?.count ?? 0) > 0) { any = true; break; }
+          }
+          if (!any) return false;
+        }
         if (!lower) return true;
+        // Search also matches marker sample text (so "fuck" or "got it" finds matching sessions).
+        const markerHaystack = s.markers
+          ? Object.values(s.markers).flatMap((m) => m.samples).join(" ")
+          : "";
         const hay = [
           s.title, s.shortDescription, s.project.name, s.project.description,
           ...(s.tags ?? []),
+          markerHaystack,
         ].join(" ").toLowerCase();
         return hay.includes(lower);
       }),
     }))
     .filter((g) => g.sessions.length > 0);
 
-  const hasFilters = query.length > 0 || selectedTags.size > 0;
-  const clearAll = () => { setQuery(""); setSelectedTags(new Set()); };
+  const hasFilters = query.length > 0 || selectedTags.size > 0 || selectedMarkers.size > 0;
+  const clearAll = () => { setQuery(""); setSelectedTags(new Set()); setSelectedMarkers(new Set()); };
 
   const totalSessions = groups.reduce((n, g) => n + g.sessions.length, 0);
   const totalEvents = groups.reduce((n, g) => n + g.sessions.reduce((m, s) => m + s.events.length, 0), 0);
@@ -103,9 +140,51 @@ export function SessionPicker({ groups }: Props) {
           )}
         </label>
 
+        {/* Marker facets — sentiment / statement categories */}
+        <div className="mt-4 flex flex-wrap items-center gap-1.5">
+          <span className="mr-1 text-[10px] uppercase tracking-widest text-ink-faint">Vibes</span>
+          {MARKER_CATEGORIES.map((m) => {
+            const meta = MARKER_META[m];
+            const n = markerCounts[m];
+            const active = selectedMarkers.has(m);
+            const disabled = n === 0;
+            return (
+              <button
+                key={m}
+                type="button"
+                onClick={() => !disabled && toggleMarker(m)}
+                disabled={disabled}
+                title={meta.description}
+                className={cn(
+                  "inline-flex items-center gap-1 rounded-full border px-2.5 py-0.5 text-[11px] transition-colors",
+                  active
+                    ? "border-accent/60 bg-accent/15 text-accent-glow"
+                    : disabled
+                      ? "border-line-subtle bg-bg-panel/40 text-ink-faint opacity-50"
+                      : "border-line bg-bg-panel text-ink-muted hover:border-line-strong hover:text-ink"
+                )}
+              >
+                <span>{meta.emoji}</span>
+                <span>{meta.label}</span>
+                <span className={cn("text-[10px]", active ? "text-accent-glow/70" : "text-ink-faint")}>
+                  {n}
+                </span>
+              </button>
+            );
+          })}
+          {selectedMarkers.size > 0 && (
+            <button
+              onClick={() => setSelectedMarkers(new Set())}
+              className="ml-1 text-[11px] text-ink-faint hover:text-ink"
+            >
+              clear vibes
+            </button>
+          )}
+        </div>
+
         {/* Tag facets */}
         {allTags.length > 0 && (
-          <div className="mt-4 flex flex-wrap items-center gap-1.5">
+          <div className="mt-3 flex flex-wrap items-center gap-1.5">
             <span className="mr-1 text-[10px] uppercase tracking-widest text-ink-faint">Tags</span>
             {allTags.map(([t, n]) => {
               const active = selectedTags.has(t);
@@ -235,6 +314,28 @@ function SessionCard({
       <p className="px-4 text-[12.5px] leading-relaxed text-ink-muted">
         {session.shortDescription}
       </p>
+      {session.markers && (
+        <div className="flex flex-wrap gap-1 px-4 pt-2.5">
+          {MARKER_CATEGORIES.map((c) => {
+            const hit = session.markers?.[c];
+            if (!hit || hit.count === 0) return null;
+            const meta = MARKER_META[c];
+            const tooltip = hit.samples.length > 0
+              ? `${meta.label}: ${hit.samples.join(", ")}`
+              : meta.label;
+            return (
+              <span
+                key={c}
+                title={tooltip}
+                className="inline-flex items-center gap-1 rounded-md border border-line-subtle bg-bg-subtle/60 px-1.5 py-0.5 text-[10.5px] text-ink-muted"
+              >
+                <span>{meta.emoji}</span>
+                <span className="font-medium text-ink">{hit.count}</span>
+              </span>
+            );
+          })}
+        </div>
+      )}
       {session.tags && session.tags.length > 0 && (
         <div className="flex flex-wrap gap-1.5 px-4 pt-3">
           {session.tags.map((t) => {

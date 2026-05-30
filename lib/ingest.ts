@@ -10,6 +10,7 @@ import { homedir } from "os";
 import type {
   Session, Project, ReplayEvent, EventType,
 } from "./types";
+import { scoreMarkers, MARKER_CATEGORIES, type MarkerCategory } from "./markers";
 
 const ROOT = join(homedir(), ".claude", "projects");
 
@@ -111,6 +112,8 @@ function parseSession(text: string, dirName: string, sessionId: string): Session
     total: 0,
     turns: 0,
   };
+  const markers: Record<string, { count: number; eventIds: string[]; samples: string[] }> = {};
+  for (const c of MARKER_CATEGORIES) markers[c] = { count: 0, eventIds: [], samples: [] };
 
   for (const r of raw) {
     const ts = r.timestamp ?? "";
@@ -131,6 +134,20 @@ function parseSession(text: string, dirName: string, sessionId: string): Session
         const text = stripSlashCommandNoise(content);
         if (!text) continue;
         if (!firstPrompt) firstPrompt = text;
+        // Score sentiment/statement markers on the user-prompt text only.
+        const hits = scoreMarkers(text);
+        for (const cat of MARKER_CATEGORIES) {
+          const h = hits[cat];
+          if (h.count > 0) {
+            markers[cat].count += h.count;
+            if (!markers[cat].eventIds.includes(uuid)) markers[cat].eventIds.push(uuid);
+            for (const s of h.samples) {
+              if (markers[cat].samples.length < 6 && !markers[cat].samples.includes(s)) {
+                markers[cat].samples.push(s);
+              }
+            }
+          }
+        }
         events.push({
           id: uuid,
           timestamp: ts,
@@ -198,6 +215,8 @@ function parseSession(text: string, dirName: string, sessionId: string): Session
 
   tokens.total = tokens.input + tokens.cacheCreation + tokens.cacheRead + tokens.output;
 
+  const hasAnyMarker = MARKER_CATEGORIES.some((c) => markers[c].count > 0);
+
   return {
     id: sessionId,
     project,
@@ -213,6 +232,7 @@ function parseSession(text: string, dirName: string, sessionId: string): Session
     checkpoints: {},
     filePaths: [...filePaths].sort(),
     tokens: tokens.turns > 0 ? tokens : undefined,
+    markers: hasAnyMarker ? markers : undefined,
     shippedSummary: {
       headline: title,
       features: [],

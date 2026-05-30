@@ -136,6 +136,20 @@ export interface Session {
     /** Number of assistant turns that contributed usage. */
     turns: number;
   };
+  /** Sentiment/statement markers found across user prompts. Keys are marker
+   * categories ("frustration", "confusion", "breakthrough", "celebration",
+   * "regret"). Value is the per-category aggregate. */
+  markers?: Record<
+    string,
+    {
+      /** Total matches of this category across the session. */
+      count: number;
+      /** Distinct event ids whose content matched this category. */
+      eventIds: string[];
+      /** Sample of the literal tokens/phrases caught — for tooltip use. */
+      samples: string[];
+    }
+  >;
   /** Final shipped state — the answer to "what shipped" */
   shippedSummary: {
     headline: string;

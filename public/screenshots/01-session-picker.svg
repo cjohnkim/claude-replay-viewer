@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 840" preserveAspectRatio="xMidYMid meet" font-family="ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Inter, sans-serif">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 920" preserveAspectRatio="xMidYMid meet" font-family="ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Inter, sans-serif">
   <defs>
     <style>
       .bg-base { fill: #0a0a0c; }
@@ -12,13 +12,12 @@
       .ink-muted { fill: #a0a0aa; }
       .ink-faint { fill: #6a6a74; }
       .accent { fill: #a0acff; }
-      .accent-stroke { stroke: #7c8cff; stroke-width: 1; }
       .accent-bg { fill: #7c8cff; fill-opacity: 0.12; }
       .accent-border { stroke: #7c8cff; stroke-opacity: 0.30; stroke-width: 1; fill: none; }
+      .accent-border-strong { stroke: #7c8cff; stroke-opacity: 0.60; stroke-width: 1; fill: none; }
+      .accent-bg-strong { fill: #7c8cff; fill-opacity: 0.15; }
       .tag-bg { fill: #16161a; }
       .tag-border { stroke: #1a1a20; stroke-width: 1; fill: none; }
-      .tag-active-bg { fill: #7c8cff; fill-opacity: 0.15; }
-      .tag-active-border { stroke: #7c8cff; stroke-opacity: 0.55; stroke-width: 1; fill: none; }
       text { dominant-baseline: middle; }
       .mono { font-family: ui-monospace, 'SF Mono', Menlo, Consolas, monospace; }
     </style>
@@ -33,9 +32,9 @@
   </defs>
 
   <!-- canvas -->
-  <rect class="bg-base" width="1280" height="840"/>
-  <rect width="1280" height="840" fill="url(#glow1)"/>
-  <rect width="1280" height="840" fill="url(#glow2)"/>
+  <rect class="bg-base" width="1280" height="920"/>
+  <rect width="1280" height="920" fill="url(#glow1)"/>
+  <rect width="1280" height="920" fill="url(#glow2)"/>
 
   <!-- ============ header ============ -->
   <g transform="translate(48, 36)">
@@ -49,137 +48,171 @@
     <rect x="0" y="0" width="900" height="40" rx="8" class="ln"/>
     <circle cx="20" cy="20" r="6" class="ln-subtle" stroke-width="1.5"/>
     <line x1="24" y1="24" x2="28" y2="28" class="ln-subtle" stroke-width="1.5"/>
-    <text x="44" y="21" font-size="13" class="ink-faint">Search sessions, projects, tags…</text>
+    <text x="44" y="21" font-size="13" class="ink-faint">Search sessions, projects, tags, or any prompt text…</text>
   </g>
 
-  <!-- tag-facet chips row -->
+  <!-- vibes (marker categories) facet row -->
   <g transform="translate(48, 158)">
-    <text x="0" y="0" font-size="10.5" letter-spacing="0.1em" class="ink-faint" font-weight="500">FILTER BY TAG</text>
-    <g transform="translate(0, 16)">
-      <rect x="0" y="0" width="68" height="22" rx="5" class="tag-active-bg"/>
-      <rect x="0" y="0" width="68" height="22" rx="5" class="tag-active-border"/>
-      <text x="34" y="12" font-size="10.5" font-weight="500" text-anchor="middle" class="accent">payments</text>
+    <text x="0" y="0" font-size="10.5" letter-spacing="0.1em" class="ink-faint" font-weight="500">VIBES</text>
+    <g transform="translate(46, -7)">
+      <!-- frustration (active) -->
+      <rect x="0" y="0" width="118" height="22" rx="11" class="accent-bg-strong"/>
+      <rect x="0" y="0" width="118" height="22" rx="11" class="accent-border-strong"/>
+      <text x="10" y="12" font-size="11">😤</text>
+      <text x="28" y="12" font-size="11" font-weight="500" class="accent">frustration</text>
+      <text x="102" y="12" font-size="10" class="ink-faint">8</text>
 
-      <rect x="78" y="0" width="64" height="22" rx="5" class="tag-bg"/>
-      <rect x="78" y="0" width="64" height="22" rx="5" class="tag-border"/>
-      <text x="110" y="12" font-size="10.5" font-weight="500" text-anchor="middle" class="ink-faint">refactor</text>
+      <!-- confusion -->
+      <rect x="126" y="0" width="108" height="22" rx="11" class="bg-panel"/>
+      <rect x="126" y="0" width="108" height="22" rx="11" class="ln"/>
+      <text x="136" y="12" font-size="11">🤔</text>
+      <text x="154" y="12" font-size="11" font-weight="500" class="ink-muted">confusion</text>
+      <text x="220" y="12" font-size="10" class="ink-faint">15</text>
 
-      <rect x="152" y="0" width="48" height="22" rx="5" class="tag-bg"/>
-      <rect x="152" y="0" width="48" height="22" rx="5" class="tag-border"/>
-      <text x="176" y="12" font-size="10.5" font-weight="500" text-anchor="middle" class="ink-faint">auth</text>
+      <!-- breakthrough -->
+      <rect x="242" y="0" width="122" height="22" rx="11" class="bg-panel"/>
+      <rect x="242" y="0" width="122" height="22" rx="11" class="ln"/>
+      <text x="252" y="12" font-size="11">💡</text>
+      <text x="270" y="12" font-size="11" font-weight="500" class="ink-muted">breakthrough</text>
+      <text x="350" y="12" font-size="10" class="ink-faint">11</text>
 
-      <rect x="210" y="0" width="76" height="22" rx="5" class="tag-bg"/>
-      <rect x="210" y="0" width="76" height="22" rx="5" class="tag-border"/>
-      <text x="248" y="12" font-size="10.5" font-weight="500" text-anchor="middle" class="ink-faint">migrations</text>
+      <!-- celebration -->
+      <rect x="372" y="0" width="116" height="22" rx="11" class="bg-panel"/>
+      <rect x="372" y="0" width="116" height="22" rx="11" class="ln"/>
+      <text x="382" y="12" font-size="11">🎉</text>
+      <text x="400" y="12" font-size="11" font-weight="500" class="ink-muted">celebration</text>
+      <text x="474" y="12" font-size="10" class="ink-faint">6</text>
 
-      <rect x="296" y="0" width="64" height="22" rx="5" class="tag-bg"/>
-      <rect x="296" y="0" width="64" height="22" rx="5" class="tag-border"/>
-      <text x="328" y="12" font-size="10.5" font-weight="500" text-anchor="middle" class="ink-faint">fraud</text>
+      <!-- regret -->
+      <rect x="496" y="0" width="90" height="22" rx="11" class="bg-panel"/>
+      <rect x="496" y="0" width="90" height="22" rx="11" class="ln"/>
+      <text x="506" y="12" font-size="11">😬</text>
+      <text x="524" y="12" font-size="11" font-weight="500" class="ink-muted">regret</text>
+      <text x="572" y="12" font-size="10" class="ink-faint">9</text>
+
+      <!-- clear vibes -->
+      <text x="600" y="12" font-size="11" class="ink-faint">clear vibes</text>
+    </g>
+  </g>
+
+  <!-- tags facet row -->
+  <g transform="translate(48, 196)">
+    <text x="0" y="0" font-size="10.5" letter-spacing="0.1em" class="ink-faint" font-weight="500">TAGS</text>
+    <g transform="translate(46, -7)">
+      <rect x="0" y="0" width="78" height="22" rx="11" class="bg-panel"/>
+      <rect x="0" y="0" width="78" height="22" rx="11" class="ln"/>
+      <text x="10" y="12" font-size="11" font-weight="500" class="ink-muted">payments</text>
+      <text x="65" y="12" font-size="10" class="ink-faint">4</text>
+
+      <rect x="86" y="0" width="70" height="22" rx="11" class="bg-panel"/>
+      <rect x="86" y="0" width="70" height="22" rx="11" class="ln"/>
+      <text x="96" y="12" font-size="11" font-weight="500" class="ink-muted">refactor</text>
+      <text x="143" y="12" font-size="10" class="ink-faint">3</text>
+
+      <rect x="164" y="0" width="54" height="22" rx="11" class="bg-panel"/>
+      <rect x="164" y="0" width="54" height="22" rx="11" class="ln"/>
+      <text x="174" y="12" font-size="11" font-weight="500" class="ink-muted">fraud</text>
+      <text x="205" y="12" font-size="10" class="ink-faint">5</text>
+
+      <rect x="226" y="0" width="50" height="22" rx="11" class="bg-panel"/>
+      <rect x="226" y="0" width="50" height="22" rx="11" class="ln"/>
+      <text x="236" y="12" font-size="11" font-weight="500" class="ink-muted">auth</text>
+      <text x="263" y="12" font-size="10" class="ink-faint">3</text>
+
+      <rect x="284" y="0" width="76" height="22" rx="11" class="bg-panel"/>
+      <rect x="284" y="0" width="76" height="22" rx="11" class="ln"/>
+      <text x="294" y="12" font-size="11" font-weight="500" class="ink-muted">database</text>
+      <text x="347" y="12" font-size="10" class="ink-faint">2</text>
     </g>
   </g>
 
   <!-- ============ project group: payments-api ============ -->
-  <g transform="translate(48, 232)">
+  <g transform="translate(48, 252)">
     <text x="0" y="0" font-size="11" letter-spacing="0.12em" class="ink-faint" font-weight="600">PAYMENTS-API · 3 SESSIONS</text>
   </g>
 
   <!-- card 1: hovered -->
-  <g transform="translate(48, 256)">
-    <rect x="0" y="0" width="380" height="200" rx="10" class="bg-hover"/>
-    <rect x="0" y="0" width="380" height="200" rx="10" class="accent-border"/>
+  <g transform="translate(48, 276)">
+    <rect x="0" y="0" width="380" height="228" rx="10" class="bg-hover"/>
+    <rect x="0" y="0" width="380" height="228" rx="10" class="accent-border"/>
 
-    <!-- title row -->
     <text x="16" y="32" font-size="14" font-weight="600" class="ink">Add idempotent transfer endpoint</text>
-    <!-- token chip -->
     <g transform="translate(280, 22)">
       <rect x="0" y="0" width="68" height="20" rx="5" class="accent-bg"/>
       <rect x="0" y="0" width="68" height="20" rx="5" class="accent-border"/>
-      <path d="M 8 10 L 12 6 L 11 10 L 14 10 L 10 14 L 11 10 Z" class="accent" fill="#a0acff"/>
+      <path d="M 8 10 L 12 6 L 11 10 L 14 10 L 10 14 L 11 10 Z" fill="#a0acff"/>
       <text x="22" y="11" font-size="10.5" font-weight="600" letter-spacing="0.04em" class="accent">24.3M</text>
     </g>
-    <!-- arrow -->
-    <path d="M 354 28 L 360 32 L 354 36 M 360 32 L 348 32" class="ink-faint" stroke="#a0acff" stroke-width="1.5" fill="none"/>
+    <path d="M 354 28 L 360 32 L 354 36 M 360 32 L 348 32" stroke="#a0acff" stroke-width="1.5" fill="none"/>
 
-    <!-- description -->
     <text x="16" y="64" font-size="12.5" class="ink-muted">Build POST /v2/transfers with idempotency-key</text>
     <text x="16" y="80" font-size="12.5" class="ink-muted">header. Cover replay, partial failure, ledger…</text>
 
+    <!-- markers row (this one had real frustration) -->
+    <g transform="translate(16, 100)">
+      <rect x="0" y="0" width="40" height="20" rx="4" class="bg-subtle"/>
+      <rect x="0" y="0" width="40" height="20" rx="4" class="tag-border"/>
+      <text x="6" y="11" font-size="10">😤</text>
+      <text x="26" y="11" font-size="10.5" font-weight="500" class="ink">14</text>
+
+      <rect x="46" y="0" width="36" height="20" rx="4" class="bg-subtle"/>
+      <rect x="46" y="0" width="36" height="20" rx="4" class="tag-border"/>
+      <text x="52" y="11" font-size="10">😬</text>
+      <text x="72" y="11" font-size="10.5" font-weight="500" class="ink">5</text>
+
+      <rect x="88" y="0" width="36" height="20" rx="4" class="bg-subtle"/>
+      <rect x="88" y="0" width="36" height="20" rx="4" class="tag-border"/>
+      <text x="94" y="11" font-size="10">💡</text>
+      <text x="114" y="11" font-size="10.5" font-weight="500" class="ink">2</text>
+    </g>
+
     <!-- tags -->
-    <g transform="translate(16, 102)">
+    <g transform="translate(16, 130)">
       <rect x="0" y="0" width="60" height="20" rx="4" class="tag-bg"/>
       <rect x="0" y="0" width="60" height="20" rx="4" class="tag-border"/>
       <text x="30" y="11" font-size="10" font-weight="500" text-anchor="middle" class="ink-faint">payments</text>
-
       <rect x="66" y="0" width="60" height="20" rx="4" class="tag-bg"/>
       <rect x="66" y="0" width="60" height="20" rx="4" class="tag-border"/>
       <text x="96" y="11" font-size="10" font-weight="500" text-anchor="middle" class="ink-faint">backend</text>
-
       <rect x="132" y="0" width="52" height="20" rx="4" class="tag-bg"/>
       <rect x="132" y="0" width="52" height="20" rx="4" class="tag-border"/>
       <text x="158" y="11" font-size="10" font-weight="500" text-anchor="middle" class="ink-faint">testing</text>
     </g>
 
-    <!-- divider -->
-    <line x1="0" y1="142" x2="380" y2="142" class="ln-subtle"/>
-    <!-- stats row: 5 cells -->
-    <g transform="translate(0, 142)" font-size="9.5" letter-spacing="0.12em">
-      <g transform="translate(0, 0)">
-        <text x="12" y="16" class="ink-faint" font-weight="500">⏱ DURATION</text>
-        <text x="12" y="32" font-size="12" font-weight="500" class="ink">2h 14m</text>
-      </g>
+    <line x1="0" y1="170" x2="380" y2="170" class="ln-subtle"/>
+    <g transform="translate(0, 170)" font-size="9.5" letter-spacing="0.12em">
+      <g transform="translate(0, 0)"><text x="12" y="16" class="ink-faint" font-weight="500">⏱ DURATION</text><text x="12" y="32" font-size="12" font-weight="500" class="ink">2h 14m</text></g>
       <line x1="76" y1="6" x2="76" y2="40" class="ln-subtle"/>
-      <g transform="translate(76, 0)">
-        <text x="12" y="16" class="ink-faint" font-weight="500"># EVENTS</text>
-        <text x="12" y="32" font-size="12" font-weight="500" class="ink">487</text>
-      </g>
+      <g transform="translate(76, 0)"><text x="12" y="16" class="ink-faint" font-weight="500"># EVENTS</text><text x="12" y="32" font-size="12" font-weight="500" class="ink">487</text></g>
       <line x1="152" y1="6" x2="152" y2="40" class="ln-subtle"/>
-      <g transform="translate(152, 0)">
-        <text x="12" y="16" class="ink-faint" font-weight="500">📁 FILES</text>
-        <text x="12" y="32" font-size="12" font-weight="500" class="ink">14</text>
-      </g>
+      <g transform="translate(152, 0)"><text x="12" y="16" class="ink-faint" font-weight="500">📁 FILES</text><text x="12" y="32" font-size="12" font-weight="500" class="ink">14</text></g>
       <line x1="228" y1="6" x2="228" y2="40" class="ln-subtle"/>
-      <g transform="translate(228, 0)">
-        <text x="12" y="16" class="ink-faint" font-weight="500">⚑ CKPTS</text>
-        <text x="12" y="32" font-size="12" font-weight="500" class="ink">3</text>
-      </g>
+      <g transform="translate(228, 0)"><text x="12" y="16" class="ink-faint" font-weight="500">⚑ CKPTS</text><text x="12" y="32" font-size="12" font-weight="500" class="ink">3</text></g>
       <line x1="304" y1="6" x2="304" y2="40" class="ln-subtle"/>
-      <g transform="translate(304, 0)">
-        <text x="12" y="16" class="ink-faint" font-weight="500">⚡ TOKENS</text>
-        <text x="12" y="32" font-size="12" font-weight="500" class="ink">24.3M</text>
-      </g>
+      <g transform="translate(304, 0)"><text x="12" y="16" class="ink-faint" font-weight="500">⚡ TOKENS</text><text x="12" y="32" font-size="12" font-weight="500" class="ink">24.3M</text></g>
     </g>
-    <line x1="0" y1="182" x2="380" y2="182" class="ln-subtle"/>
-    <!-- date footer -->
-    <text x="16" y="194" font-size="10" class="ink-faint">📅 May 28, 2026</text>
+    <line x1="0" y1="210" x2="380" y2="210" class="ln-subtle"/>
+    <text x="16" y="222" font-size="10" class="ink-faint">📅 May 28, 2026</text>
   </g>
 
-  <!-- ============ token-chip hover tooltip floating over card 1 ============ -->
-  <g transform="translate(248, 296)">
-    <rect x="0" y="0" width="288" height="72" rx="6" fill="#1c1c22"/>
-    <rect x="0" y="0" width="288" height="72" rx="6" stroke="#33333d" stroke-width="1" fill="none"/>
-    <text x="14" y="18" font-size="10" letter-spacing="0.1em" class="ink-faint" font-weight="600">TOKEN BREAKDOWN · 156 TURNS</text>
-    <line x1="14" y1="28" x2="274" y2="28" stroke="#22222a"/>
-    <g transform="translate(14, 40)" font-size="11" class="mono">
-      <text class="ink-muted">in</text>
-      <text x="50" class="ink">211</text>
-
-      <text x="100" class="ink-muted">cache+</text>
-      <text x="160" class="ink">615.6K</text>
-
-      <text x="0" y="18" class="ink-muted">cache-r</text>
-      <text x="50" y="18" class="ink">14.2M</text>
-
-      <text x="100" y="18" class="ink-muted">out</text>
-      <text x="160" y="18" class="ink">538.2K</text>
+  <!-- vibe-tooltip floating over card 1 (showing detected samples) -->
+  <g transform="translate(248, 320)">
+    <rect x="0" y="0" width="304" height="68" rx="6" fill="#1c1c22"/>
+    <rect x="0" y="0" width="304" height="68" rx="6" stroke="#33333d" stroke-width="1" fill="none"/>
+    <text x="14" y="18" font-size="10" letter-spacing="0.1em" class="ink-faint" font-weight="600">😤 FRUSTRATION · 14 MATCHES</text>
+    <line x1="14" y1="28" x2="290" y2="28" stroke="#22222a"/>
+    <g transform="translate(14, 38)" font-size="10.5" class="mono">
+      <text class="ink-muted">samples:</text>
+      <text x="58" class="ink">"ugh", "wtf", "doesn't work",</text>
+      <text x="58" y="14" class="ink">"why doesn't", "i hate", "ffs"</text>
     </g>
-    <!-- pointer to chip -->
-    <path d="M 100 0 L 96 -8 L 104 -8 Z" fill="#1c1c22" stroke="#33333d" stroke-width="1"/>
+    <path d="M 38 0 L 34 -8 L 42 -8 Z" fill="#1c1c22" stroke="#33333d" stroke-width="1"/>
   </g>
 
   <!-- card 2 -->
-  <g transform="translate(444, 256)">
-    <rect x="0" y="0" width="380" height="200" rx="10" class="bg-panel"/>
-    <rect x="0" y="0" width="380" height="200" rx="10" class="ln"/>
+  <g transform="translate(444, 276)">
+    <rect x="0" y="0" width="380" height="228" rx="10" class="bg-panel"/>
+    <rect x="0" y="0" width="380" height="228" rx="10" class="ln"/>
     <text x="16" y="32" font-size="14" font-weight="600" class="ink">Refactor settlement retry logic</text>
     <g transform="translate(284, 22)">
       <rect x="0" y="0" width="60" height="20" rx="5" class="accent-bg"/>
@@ -190,7 +223,19 @@
     <path d="M 354 28 L 360 32 L 354 36 M 360 32 L 348 32" stroke="#6a6a74" stroke-width="1.5" fill="none"/>
     <text x="16" y="64" font-size="12.5" class="ink-muted">Move retry orchestration off the synchronous</text>
     <text x="16" y="80" font-size="12.5" class="ink-muted">request path; queue + idempotent re-publish.</text>
-    <g transform="translate(16, 102)">
+
+    <g transform="translate(16, 100)">
+      <rect x="0" y="0" width="36" height="20" rx="4" class="bg-subtle"/>
+      <rect x="0" y="0" width="36" height="20" rx="4" class="tag-border"/>
+      <text x="6" y="11" font-size="10">🤔</text>
+      <text x="26" y="11" font-size="10.5" font-weight="500" class="ink">3</text>
+      <rect x="42" y="0" width="36" height="20" rx="4" class="bg-subtle"/>
+      <rect x="42" y="0" width="36" height="20" rx="4" class="tag-border"/>
+      <text x="48" y="11" font-size="10">💡</text>
+      <text x="68" y="11" font-size="10.5" font-weight="500" class="ink">4</text>
+    </g>
+
+    <g transform="translate(16, 130)">
       <rect x="0" y="0" width="60" height="20" rx="4" class="tag-bg"/>
       <rect x="0" y="0" width="60" height="20" rx="4" class="tag-border"/>
       <text x="30" y="11" font-size="10" font-weight="500" text-anchor="middle" class="ink-faint">payments</text>
@@ -198,8 +243,8 @@
       <rect x="66" y="0" width="60" height="20" rx="4" class="tag-border"/>
       <text x="96" y="11" font-size="10" font-weight="500" text-anchor="middle" class="ink-faint">refactor</text>
     </g>
-    <line x1="0" y1="142" x2="380" y2="142" class="ln-subtle"/>
-    <g transform="translate(0, 142)" font-size="9.5" letter-spacing="0.12em">
+    <line x1="0" y1="170" x2="380" y2="170" class="ln-subtle"/>
+    <g transform="translate(0, 170)" font-size="9.5" letter-spacing="0.12em">
       <g transform="translate(0, 0)"><text x="12" y="16" class="ink-faint" font-weight="500">⏱ DURATION</text><text x="12" y="32" font-size="12" font-weight="500" class="ink">58m</text></g>
       <line x1="76" y1="6" x2="76" y2="40" class="ln-subtle"/>
       <g transform="translate(76, 0)"><text x="12" y="16" class="ink-faint" font-weight="500"># EVENTS</text><text x="12" y="32" font-size="12" font-weight="500" class="ink">196</text></g>
@@ -210,14 +255,14 @@
       <line x1="304" y1="6" x2="304" y2="40" class="ln-subtle"/>
       <g transform="translate(304, 0)"><text x="12" y="16" class="ink-faint" font-weight="500">⚡ TOKENS</text><text x="12" y="32" font-size="12" font-weight="500" class="ink">8.7M</text></g>
     </g>
-    <line x1="0" y1="182" x2="380" y2="182" class="ln-subtle"/>
-    <text x="16" y="194" font-size="10" class="ink-faint">📅 May 26, 2026</text>
+    <line x1="0" y1="210" x2="380" y2="210" class="ln-subtle"/>
+    <text x="16" y="222" font-size="10" class="ink-faint">📅 May 26, 2026</text>
   </g>
 
   <!-- card 3 -->
-  <g transform="translate(840, 256)">
-    <rect x="0" y="0" width="380" height="200" rx="10" class="bg-panel"/>
-    <rect x="0" y="0" width="380" height="200" rx="10" class="ln"/>
+  <g transform="translate(840, 276)">
+    <rect x="0" y="0" width="380" height="228" rx="10" class="bg-panel"/>
+    <rect x="0" y="0" width="380" height="228" rx="10" class="ln"/>
     <text x="16" y="32" font-size="14" font-weight="600" class="ink">Fix race in ledger write path</text>
     <g transform="translate(280, 22)">
       <rect x="0" y="0" width="68" height="20" rx="5" class="accent-bg"/>
@@ -228,7 +273,19 @@
     <path d="M 354 28 L 360 32 L 354 36 M 360 32 L 348 32" stroke="#6a6a74" stroke-width="1.5" fill="none"/>
     <text x="16" y="64" font-size="12.5" class="ink-muted">Move balance update inside the txn boundary;</text>
     <text x="16" y="80" font-size="12.5" class="ink-muted">add unit + load test to verify no double-debit.</text>
-    <g transform="translate(16, 102)">
+
+    <g transform="translate(16, 100)">
+      <rect x="0" y="0" width="40" height="20" rx="4" class="bg-subtle"/>
+      <rect x="0" y="0" width="40" height="20" rx="4" class="tag-border"/>
+      <text x="6" y="11" font-size="10">😤</text>
+      <text x="26" y="11" font-size="10.5" font-weight="500" class="ink">7</text>
+      <rect x="46" y="0" width="36" height="20" rx="4" class="bg-subtle"/>
+      <rect x="46" y="0" width="36" height="20" rx="4" class="tag-border"/>
+      <text x="52" y="11" font-size="10">🎉</text>
+      <text x="72" y="11" font-size="10.5" font-weight="500" class="ink">2</text>
+    </g>
+
+    <g transform="translate(16, 130)">
       <rect x="0" y="0" width="60" height="20" rx="4" class="tag-bg"/>
       <rect x="0" y="0" width="60" height="20" rx="4" class="tag-border"/>
       <text x="30" y="11" font-size="10" font-weight="500" text-anchor="middle" class="ink-faint">payments</text>
@@ -239,8 +296,8 @@
       <rect x="108" y="0" width="64" height="20" rx="4" class="tag-border"/>
       <text x="140" y="11" font-size="10" font-weight="500" text-anchor="middle" class="ink-faint">database</text>
     </g>
-    <line x1="0" y1="142" x2="380" y2="142" class="ln-subtle"/>
-    <g transform="translate(0, 142)" font-size="9.5" letter-spacing="0.12em">
+    <line x1="0" y1="170" x2="380" y2="170" class="ln-subtle"/>
+    <g transform="translate(0, 170)" font-size="9.5" letter-spacing="0.12em">
       <g transform="translate(0, 0)"><text x="12" y="16" class="ink-faint" font-weight="500">⏱ DURATION</text><text x="12" y="32" font-size="12" font-weight="500" class="ink">1h 42m</text></g>
       <line x1="76" y1="6" x2="76" y2="40" class="ln-subtle"/>
       <g transform="translate(76, 0)"><text x="12" y="16" class="ink-faint" font-weight="500"># EVENTS</text><text x="12" y="32" font-size="12" font-weight="500" class="ink">312</text></g>
@@ -251,19 +308,19 @@
       <line x1="304" y1="6" x2="304" y2="40" class="ln-subtle"/>
       <g transform="translate(304, 0)"><text x="12" y="16" class="ink-faint" font-weight="500">⚡ TOKENS</text><text x="12" y="32" font-size="12" font-weight="500" class="ink">12.1M</text></g>
     </g>
-    <line x1="0" y1="182" x2="380" y2="182" class="ln-subtle"/>
-    <text x="16" y="194" font-size="10" class="ink-faint">📅 May 24, 2026</text>
+    <line x1="0" y1="210" x2="380" y2="210" class="ln-subtle"/>
+    <text x="16" y="222" font-size="10" class="ink-faint">📅 May 24, 2026</text>
   </g>
 
   <!-- ============ project group: fraud-platform ============ -->
-  <g transform="translate(48, 488)">
+  <g transform="translate(48, 536)">
     <text x="0" y="0" font-size="11" letter-spacing="0.12em" class="ink-faint" font-weight="600">FRAUD-PLATFORM · 5 SESSIONS</text>
   </g>
 
   <!-- row 2, card 1 -->
-  <g transform="translate(48, 512)">
-    <rect x="0" y="0" width="380" height="200" rx="10" class="bg-panel"/>
-    <rect x="0" y="0" width="380" height="200" rx="10" class="ln"/>
+  <g transform="translate(48, 560)">
+    <rect x="0" y="0" width="380" height="228" rx="10" class="bg-panel"/>
+    <rect x="0" y="0" width="380" height="228" rx="10" class="ln"/>
     <text x="16" y="32" font-size="14" font-weight="600" class="ink">Build velocity-check service</text>
     <g transform="translate(280, 22)">
       <rect x="0" y="0" width="68" height="20" rx="5" class="accent-bg"/>
@@ -274,7 +331,19 @@
     <path d="M 354 28 L 360 32 L 354 36 M 360 32 L 348 32" stroke="#6a6a74" stroke-width="1.5" fill="none"/>
     <text x="16" y="64" font-size="12.5" class="ink-muted">Standalone microservice; per-actor sliding</text>
     <text x="16" y="80" font-size="12.5" class="ink-muted">window; Redis-backed counters with TTL.</text>
-    <g transform="translate(16, 102)">
+
+    <g transform="translate(16, 100)">
+      <rect x="0" y="0" width="36" height="20" rx="4" class="bg-subtle"/>
+      <rect x="0" y="0" width="36" height="20" rx="4" class="tag-border"/>
+      <text x="6" y="11" font-size="10">💡</text>
+      <text x="26" y="11" font-size="10.5" font-weight="500" class="ink">8</text>
+      <rect x="42" y="0" width="36" height="20" rx="4" class="bg-subtle"/>
+      <rect x="42" y="0" width="36" height="20" rx="4" class="tag-border"/>
+      <text x="48" y="11" font-size="10">🎉</text>
+      <text x="68" y="11" font-size="10.5" font-weight="500" class="ink">3</text>
+    </g>
+
+    <g transform="translate(16, 130)">
       <rect x="0" y="0" width="42" height="20" rx="4" class="tag-bg"/>
       <rect x="0" y="0" width="42" height="20" rx="4" class="tag-border"/>
       <text x="21" y="11" font-size="10" font-weight="500" text-anchor="middle" class="ink-faint">fraud</text>
@@ -282,8 +351,8 @@
       <rect x="48" y="0" width="68" height="20" rx="4" class="tag-border"/>
       <text x="82" y="11" font-size="10" font-weight="500" text-anchor="middle" class="ink-faint">greenfield</text>
     </g>
-    <line x1="0" y1="142" x2="380" y2="142" class="ln-subtle"/>
-    <g transform="translate(0, 142)" font-size="9.5" letter-spacing="0.12em">
+    <line x1="0" y1="170" x2="380" y2="170" class="ln-subtle"/>
+    <g transform="translate(0, 170)" font-size="9.5" letter-spacing="0.12em">
       <g transform="translate(0, 0)"><text x="12" y="16" class="ink-faint" font-weight="500">⏱ DURATION</text><text x="12" y="32" font-size="12" font-weight="500" class="ink">4h 28m</text></g>
       <line x1="76" y1="6" x2="76" y2="40" class="ln-subtle"/>
       <g transform="translate(76, 0)"><text x="12" y="16" class="ink-faint" font-weight="500"># EVENTS</text><text x="12" y="32" font-size="12" font-weight="500" class="ink">912</text></g>
@@ -294,14 +363,14 @@
       <line x1="304" y1="6" x2="304" y2="40" class="ln-subtle"/>
       <g transform="translate(304, 0)"><text x="12" y="16" class="ink-faint" font-weight="500">⚡ TOKENS</text><text x="12" y="32" font-size="12" font-weight="500" class="ink">47.2M</text></g>
     </g>
-    <line x1="0" y1="182" x2="380" y2="182" class="ln-subtle"/>
-    <text x="16" y="194" font-size="10" class="ink-faint">📅 May 22, 2026</text>
+    <line x1="0" y1="210" x2="380" y2="210" class="ln-subtle"/>
+    <text x="16" y="222" font-size="10" class="ink-faint">📅 May 22, 2026</text>
   </g>
 
   <!-- row 2, card 2 -->
-  <g transform="translate(444, 512)">
-    <rect x="0" y="0" width="380" height="200" rx="10" class="bg-panel"/>
-    <rect x="0" y="0" width="380" height="200" rx="10" class="ln"/>
+  <g transform="translate(444, 560)">
+    <rect x="0" y="0" width="380" height="228" rx="10" class="bg-panel"/>
+    <rect x="0" y="0" width="380" height="228" rx="10" class="ln"/>
     <text x="16" y="32" font-size="14" font-weight="600" class="ink">Tune anomaly threshold model</text>
     <g transform="translate(280, 22)">
       <rect x="0" y="0" width="68" height="20" rx="5" class="accent-bg"/>
@@ -312,7 +381,23 @@
     <path d="M 354 28 L 360 32 L 354 36 M 360 32 L 348 32" stroke="#6a6a74" stroke-width="1.5" fill="none"/>
     <text x="16" y="64" font-size="12.5" class="ink-muted">Sweep thresholds against last 30-day claims</text>
     <text x="16" y="80" font-size="12.5" class="ink-muted">data; ROC + precision/recall snapshots.</text>
-    <g transform="translate(16, 102)">
+
+    <g transform="translate(16, 100)">
+      <rect x="0" y="0" width="40" height="20" rx="4" class="bg-subtle"/>
+      <rect x="0" y="0" width="40" height="20" rx="4" class="tag-border"/>
+      <text x="6" y="11" font-size="10">😤</text>
+      <text x="26" y="11" font-size="10.5" font-weight="500" class="ink">22</text>
+      <rect x="46" y="0" width="36" height="20" rx="4" class="bg-subtle"/>
+      <rect x="46" y="0" width="36" height="20" rx="4" class="tag-border"/>
+      <text x="52" y="11" font-size="10">🤔</text>
+      <text x="72" y="11" font-size="10.5" font-weight="500" class="ink">9</text>
+      <rect x="88" y="0" width="36" height="20" rx="4" class="bg-subtle"/>
+      <rect x="88" y="0" width="36" height="20" rx="4" class="tag-border"/>
+      <text x="94" y="11" font-size="10">😬</text>
+      <text x="114" y="11" font-size="10.5" font-weight="500" class="ink">6</text>
+    </g>
+
+    <g transform="translate(16, 130)">
       <rect x="0" y="0" width="42" height="20" rx="4" class="tag-bg"/>
       <rect x="0" y="0" width="42" height="20" rx="4" class="tag-border"/>
       <text x="21" y="11" font-size="10" font-weight="500" text-anchor="middle" class="ink-faint">fraud</text>
@@ -320,8 +405,8 @@
       <rect x="48" y="0" width="68" height="20" rx="4" class="tag-border"/>
       <text x="82" y="11" font-size="10" font-weight="500" text-anchor="middle" class="ink-faint">ml-tuning</text>
     </g>
-    <line x1="0" y1="142" x2="380" y2="142" class="ln-subtle"/>
-    <g transform="translate(0, 142)" font-size="9.5" letter-spacing="0.12em">
+    <line x1="0" y1="170" x2="380" y2="170" class="ln-subtle"/>
+    <g transform="translate(0, 170)" font-size="9.5" letter-spacing="0.12em">
       <g transform="translate(0, 0)"><text x="12" y="16" class="ink-faint" font-weight="500">⏱ DURATION</text><text x="12" y="32" font-size="12" font-weight="500" class="ink">3h 04m</text></g>
       <line x1="76" y1="6" x2="76" y2="40" class="ln-subtle"/>
       <g transform="translate(76, 0)"><text x="12" y="16" class="ink-faint" font-weight="500"># EVENTS</text><text x="12" y="32" font-size="12" font-weight="500" class="ink">621</text></g>
@@ -332,14 +417,14 @@
       <line x1="304" y1="6" x2="304" y2="40" class="ln-subtle"/>
       <g transform="translate(304, 0)"><text x="12" y="16" class="ink-faint" font-weight="500">⚡ TOKENS</text><text x="12" y="32" font-size="12" font-weight="500" class="ink">31.5M</text></g>
     </g>
-    <line x1="0" y1="182" x2="380" y2="182" class="ln-subtle"/>
-    <text x="16" y="194" font-size="10" class="ink-faint">📅 May 20, 2026</text>
+    <line x1="0" y1="210" x2="380" y2="210" class="ln-subtle"/>
+    <text x="16" y="222" font-size="10" class="ink-faint">📅 May 20, 2026</text>
   </g>
 
   <!-- row 2, card 3 -->
-  <g transform="translate(840, 512)">
-    <rect x="0" y="0" width="380" height="200" rx="10" class="bg-panel"/>
-    <rect x="0" y="0" width="380" height="200" rx="10" class="ln"/>
+  <g transform="translate(840, 560)">
+    <rect x="0" y="0" width="380" height="228" rx="10" class="bg-panel"/>
+    <rect x="0" y="0" width="380" height="228" rx="10" class="ln"/>
     <text x="16" y="32" font-size="14" font-weight="600" class="ink">Fraud-review dashboard endpoints</text>
     <g transform="translate(280, 22)">
       <rect x="0" y="0" width="68" height="20" rx="5" class="accent-bg"/>
@@ -350,7 +435,15 @@
     <path d="M 354 28 L 360 32 L 354 36 M 360 32 L 348 32" stroke="#6a6a74" stroke-width="1.5" fill="none"/>
     <text x="16" y="64" font-size="12.5" class="ink-muted">Paginated case list, filters, action audit log.</text>
     <text x="16" y="80" font-size="12.5" class="ink-muted">Backed by claims service. RLS-restricted.</text>
-    <g transform="translate(16, 102)">
+
+    <g transform="translate(16, 100)">
+      <rect x="0" y="0" width="36" height="20" rx="4" class="bg-subtle"/>
+      <rect x="0" y="0" width="36" height="20" rx="4" class="tag-border"/>
+      <text x="6" y="11" font-size="10">💡</text>
+      <text x="26" y="11" font-size="10.5" font-weight="500" class="ink">5</text>
+    </g>
+
+    <g transform="translate(16, 130)">
       <rect x="0" y="0" width="42" height="20" rx="4" class="tag-bg"/>
       <rect x="0" y="0" width="42" height="20" rx="4" class="tag-border"/>
       <text x="21" y="11" font-size="10" font-weight="500" text-anchor="middle" class="ink-faint">fraud</text>
@@ -358,8 +451,8 @@
       <rect x="48" y="0" width="48" height="20" rx="4" class="tag-border"/>
       <text x="72" y="11" font-size="10" font-weight="500" text-anchor="middle" class="ink-faint">api</text>
     </g>
-    <line x1="0" y1="142" x2="380" y2="142" class="ln-subtle"/>
-    <g transform="translate(0, 142)" font-size="9.5" letter-spacing="0.12em">
+    <line x1="0" y1="170" x2="380" y2="170" class="ln-subtle"/>
+    <g transform="translate(0, 170)" font-size="9.5" letter-spacing="0.12em">
       <g transform="translate(0, 0)"><text x="12" y="16" class="ink-faint" font-weight="500">⏱ DURATION</text><text x="12" y="32" font-size="12" font-weight="500" class="ink">2h 47m</text></g>
       <line x1="76" y1="6" x2="76" y2="40" class="ln-subtle"/>
       <g transform="translate(76, 0)"><text x="12" y="16" class="ink-faint" font-weight="500"># EVENTS</text><text x="12" y="32" font-size="12" font-weight="500" class="ink">441</text></g>
@@ -370,10 +463,10 @@
       <line x1="304" y1="6" x2="304" y2="40" class="ln-subtle"/>
       <g transform="translate(304, 0)"><text x="12" y="16" class="ink-faint" font-weight="500">⚡ TOKENS</text><text x="12" y="32" font-size="12" font-weight="500" class="ink">18.9M</text></g>
     </g>
-    <line x1="0" y1="182" x2="380" y2="182" class="ln-subtle"/>
-    <text x="16" y="194" font-size="10" class="ink-faint">📅 May 18, 2026</text>
+    <line x1="0" y1="210" x2="380" y2="210" class="ln-subtle"/>
+    <text x="16" y="222" font-size="10" class="ink-faint">📅 May 18, 2026</text>
   </g>
 
   <!-- footer note -->
-  <text x="48" y="800" font-size="10.5" class="ink-faint">Loaded from ~/.claude/projects/ · all local · no upload</text>
+  <text x="48" y="880" font-size="10.5" class="ink-faint">Loaded from ~/.claude/projects/ · all local · no upload · vibes computed from user-prompt text</text>
 </svg>

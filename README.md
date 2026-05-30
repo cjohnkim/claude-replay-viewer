@@ -6,9 +6,9 @@ Drop the viewer at your local machine, point it at `~/.claude/projects/`, and ev
 
 Built for product folks and engineers who want to understand (or share) *how* a piece of work got made — not just what shipped.
 
-![Session picker — tokens visible per session](./public/screenshots/01-session-picker.svg)
+![Session picker — tokens and vibes visible per session](./public/screenshots/01-session-picker.svg)
 
-*The picker. Sessions grouped by project, each card showing the token chip at upper-right and the full breakdown in the stats grid (input · cache creation · cache read · output). Mock data shown — your sessions populate from `~/.claude/projects/`.*
+*The picker. Sessions grouped by project, each card showing the token chip at upper-right and the vibes (sentiment markers) detected in user-prompt text. The "Vibes" facet row lets you filter sessions by emotional shape — find the frustrated ones, the breakthrough ones, the regret-heavy ones. Mock data shown — your real sessions populate from `~/.claude/projects/`.*
 
 ---
 
@@ -21,6 +21,7 @@ Built for product folks and engineers who want to understand (or share) *how* a 
 - **Timeline scrubber** — play, pause, speed control, step-by-step navigation.
 - **Tag-facet filtering** — clickable chips to "pick through" the collection.
 - **Token consumption visibility** — surface what each session actually cost in tokens, broken into raw input, cache creation, cache read, and output.
+- **Vibes (sentiment markers)** — scan your user prompts for cursing, confusion, breakthroughs, celebration, and regret. Five categories, each filterable. Find the frustrated sessions, find the satisfying ones.
 
 The whole viewer is read-only and local-first — your session data never leaves your machine.
 
@@ -107,6 +108,29 @@ in: 211 · cache+: 615.6K · cache-r: 14.2M · out: 538.2K · 156 turns
 - **turns** — number of assistant turns that contributed usage
 
 A session that looks expensive on totals often turns out to be mostly cache reads, which bill at ~10× lower than raw input. The breakdown surfaces the real cost shape.
+
+---
+
+## Vibes — sentiment markers
+
+The viewer scans your *user-prompt* text (not Claude's responses) for five categories of marker, displays them on the picker, and lets you filter by them:
+
+| Marker | What it catches |
+|---|---|
+| 😤 **frustration** | cursing, "doesn't work", "this is broken", "why doesn't", "i hate" |
+| 🤔 **confusion** | "wait, what", "i don't understand", "huh?", "hmm", "explain" |
+| 💡 **breakthrough** | "got it", "finally", "that works", "nailed it", "there we go" |
+| 🎉 **celebration** | "amazing", "beautiful", "love it", "perfect", "awesome" |
+| 😬 **regret** | "actually no", "scratch that", "wait wrong", "my bad", "let me revert" |
+
+All detection is local — the regex sets live in [`lib/markers.ts`](./lib/markers.ts). Conservative by design: word-bounded curses, specific phrases for the non-curse categories. Sarcasm ("great", "wonderful") is deliberately not caught — too ambiguous.
+
+Each session card surfaces matched categories as small badges. Hover for the detected sample phrases. The "Vibes" facet row at the top of the picker lets you filter to sessions where a given category fired. The search bar also matches against detected marker text — so typing `wtf` or `got it` finds the sessions where you said those things.
+
+Two uses for this:
+
+- **Inspect your own work.** Find the sessions where you got the most stuck. Find the ones where you broke through. Pattern-match across them — what conditions produced the breakthroughs, and what produced the slog?
+- **Share the process honestly.** When walking a colleague through a piece of work, show them the frustration moments alongside the wins. The real shape of building software is in the friction, not just the merged PRs.
 
 ---
 
