@@ -6,6 +6,10 @@ Drop the viewer at your local machine, point it at `~/.claude/projects/`, and ev
 
 Built for product folks and engineers who want to understand (or share) *how* a piece of work got made — not just what shipped.
 
+![Session picker — tokens visible per session](./public/screenshots/01-session-picker.svg)
+
+*The picker. Sessions grouped by project, each card showing the token chip at upper-right and the full breakdown in the stats grid (input · cache creation · cache read · output). Mock data shown — your sessions populate from `~/.claude/projects/`.*
+
 ---
 
 ## What you get
