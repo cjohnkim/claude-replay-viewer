@@ -1,0 +1,46 @@
+{
+  "name": "claude-replay-viewer",
+  "version": "0.2.0",
+  "description": "Interactive timeline viewer for Claude Code sessions. Reads ~/.claude/projects/ and renders transcript, tool calls, file changes, and per-session token consumption.",
+  "keywords": [
+    "claude-code",
+    "anthropic",
+    "ai",
+    "developer-tools",
+    "session-replay",
+    "nextjs"
+  ],
+  "homepage": "https://github.com/cjohnkim/claude-replay-viewer",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/cjohnkim/claude-replay-viewer.git"
+  },
+  "bugs": {
+    "url": "https://github.com/cjohnkim/claude-replay-viewer/issues"
+  },
+  "license": "MIT",
+  "author": "cjohnkim",
+  "scripts": {
+    "dev": "next dev -p 3033",
+    "build": "next build",
+    "start": "next start -p 3033",
+    "lint": "next lint"
+  },
+  "dependencies": {
+    "clsx": "^2.1.1",
+    "lucide-react": "^0.453.0",
+    "next": "^14.2.18",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "tailwind-merge": "^2.5.4"
+  },
+  "devDependencies": {
+    "@types/node": "^20.16.5",
+    "@types/react": "^18.3.12",
+    "@types/react-dom": "^18.3.1",
+    "autoprefixer": "^10.4.20",
+    "postcss": "^8.4.49",
+    "tailwindcss": "^3.4.14",
+    "typescript": "^5.6.3"
+  }
+}
