@@ -20,7 +20,8 @@ export type MarkerCategory =
   | "regret"
   | "decision"
   | "redirect"
-  | "gratitude";
+  | "gratitude"
+  | "question";
 
 export const MARKER_META: Record<
   MarkerCategory,
@@ -65,6 +66,11 @@ export const MARKER_META: Record<
     label: "gratitude",
     emoji: "🙏",
     description: "Thanks, appreciate, nice-work moments",
+  },
+  question: {
+    label: "question",
+    emoji: "❓",
+    description: "Actionable inquiry — distinct from confusion. \"how do I\", \"should we\", \"what's the\"",
   },
 };
 
@@ -188,6 +194,24 @@ const GRATITUDE_REGEXES: RegExp[] = [
   /\bmuch better\b/gi,
 ];
 
+// Question — actionable inquiry, distinct from confusion. Patterns that ask
+// for a path forward rather than reacting to one. Avoid bare "?" (too noisy).
+const QUESTION_REGEXES: RegExp[] = [
+  /\bhow (do|can|should|would|might) (i|we|you)\b/gi,
+  /\bshould (i|we)\b/gi,
+  /\bwhat['’]?s the (best|right|simplest|cleanest|easiest|fastest)\b/gi,
+  /\bwhat (is|are) the (best|right|trade-?offs|options|tradeoffs)\b/gi,
+  /\bcan you (explain|tell me|show me|walk|help)\b/gi,
+  /\bis there (a way|any|something|anything)\b/gi,
+  /\bare there (any|other)\b/gi,
+  /\bany (way|ideas?|thoughts?|suggestions?|recommendations?)\b/gi,
+  /\bwould it (work|make sense|be better|be simpler)\b/gi,
+  /\bdo you (think|know|have)\b/gi,
+  /\bwhat about\b/gi,
+  /\bwhat if (we|i|you)\b/gi,
+  /\bhow about\b/gi,
+];
+
 const CATEGORY_REGEXES: Record<MarkerCategory, RegExp[]> = {
   frustration: FRUSTRATION_REGEXES,
   confusion: CONFUSION_REGEXES,
@@ -197,6 +221,7 @@ const CATEGORY_REGEXES: Record<MarkerCategory, RegExp[]> = {
   decision: DECISION_REGEXES,
   redirect: REDIRECT_REGEXES,
   gratitude: GRATITUDE_REGEXES,
+  question: QUESTION_REGEXES,
 };
 
 export interface MarkerHit {
@@ -215,6 +240,7 @@ export function scoreMarkers(text: string): Record<MarkerCategory, MarkerHit> {
     decision: { count: 0, samples: [] },
     redirect: { count: 0, samples: [] },
     gratitude: { count: 0, samples: [] },
+    question: { count: 0, samples: [] },
   };
   if (!text) return out;
 
@@ -253,4 +279,5 @@ export const MARKER_CATEGORIES: MarkerCategory[] = [
   "decision",
   "redirect",
   "gratitude",
+  "question",
 ];

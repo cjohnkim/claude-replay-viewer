@@ -1,0 +1,353 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 800" preserveAspectRatio="xMidYMid meet" font-family="ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Inter, sans-serif">
+  <defs>
+    <style>
+      .bg-base { fill: #0a0a0c; }
+      .bg-panel { fill: #111114; }
+      .bg-subtle { fill: #16161a; }
+      .ln { stroke: #22222a; stroke-width: 1; fill: none; }
+      .ln-strong { stroke: #33333d; stroke-width: 1; fill: none; }
+      .ink { fill: #e9e9ee; }
+      .ink-muted { fill: #a0a0aa; }
+      .ink-faint { fill: #6a6a74; }
+      .accent { fill: #a0acff; }
+      .accent-bg { fill: #7c8cff; fill-opacity: 0.12; }
+      .accent-border { stroke: #7c8cff; stroke-opacity: 0.30; stroke-width: 1; fill: none; }
+      .c-frustration { fill: #f43f5e; fill-opacity: 0.70; }
+      .c-confusion   { fill: #fbbf24; fill-opacity: 0.70; }
+      .c-breakthrough{ fill: #fde047; fill-opacity: 0.70; }
+      .c-celebration { fill: #e879f9; fill-opacity: 0.70; }
+      .c-regret      { fill: #f97316; fill-opacity: 0.70; }
+      .c-decision    { fill: #8b5cf6; fill-opacity: 0.70; }
+      .c-redirect    { fill: #38bdf8; fill-opacity: 0.70; }
+      .c-gratitude   { fill: #34d399; fill-opacity: 0.70; }
+      .c-question    { fill: #2dd4bf; fill-opacity: 0.70; }
+      text { dominant-baseline: middle; }
+    </style>
+  </defs>
+
+  <rect class="bg-base" width="1280" height="800"/>
+
+  <!-- backdrop (dimmed picker) -->
+  <rect x="0" y="0" width="640" height="800" fill="#000" fill-opacity="0.55"/>
+  <text x="40" y="50" font-size="18" class="ink-faint" font-weight="600" opacity="0.4">Claude Code Replay Viewer</text>
+  <rect x="40" y="80" width="560" height="32" rx="6" fill="#111114" opacity="0.4"/>
+  <text x="56" y="100" font-size="11" class="ink-faint" opacity="0.5">Search sessions, projects, tags, or any prompt text…</text>
+  <g opacity="0.35">
+    <rect x="40" y="160" width="280" height="180" rx="10" fill="#16161a"/>
+    <rect x="40" y="160" width="280" height="180" rx="10" stroke="#22222a" fill="none"/>
+    <rect x="332" y="160" width="280" height="180" rx="10" fill="#16161a"/>
+    <rect x="332" y="160" width="280" height="180" rx="10" stroke="#22222a" fill="none"/>
+    <rect x="40" y="360" width="280" height="180" rx="10" fill="#16161a"/>
+    <rect x="40" y="360" width="280" height="180" rx="10" stroke="#22222a" fill="none"/>
+    <rect x="332" y="360" width="280" height="180" rx="10" fill="#16161a"/>
+    <rect x="332" y="360" width="280" height="180" rx="10" stroke="#22222a" fill="none"/>
+  </g>
+
+  <!-- ============ drawer (right side) ============ -->
+  <rect x="640" y="0" width="640" height="800" class="bg-panel"/>
+  <line x1="640" y1="0" x2="640" y2="800" class="ln-strong"/>
+
+  <!-- drawer header -->
+  <g transform="translate(640, 0)">
+    <rect x="0" y="0" width="640" height="64" class="bg-panel"/>
+    <line x1="0" y1="64" x2="640" y2="64" class="ln"/>
+    <text x="24" y="22" font-size="10" letter-spacing="0.12em" class="ink-faint" font-weight="600">ANALYTICS</text>
+    <text x="24" y="42" font-size="17" font-weight="600" class="ink">Vibes summary</text>
+
+    <!-- close button -->
+    <g transform="translate(596, 18)">
+      <rect x="0" y="0" width="28" height="28" rx="6" class="bg-panel"/>
+      <rect x="0" y="0" width="28" height="28" rx="6" class="ln"/>
+      <path d="M 8 8 L 20 20 M 20 8 L 8 20" stroke="#6a6a74" stroke-width="1.5" fill="none"/>
+    </g>
+  </g>
+
+  <!-- ===== By category section ===== -->
+  <g transform="translate(664, 90)">
+    <text x="0" y="0" font-size="10.5" letter-spacing="0.12em" class="ink-faint" font-weight="600">BY CATEGORY</text>
+
+    <!-- frustration row (expanded) -->
+    <g transform="translate(0, 16)">
+      <rect x="0" y="0" width="592" height="84" rx="6" class="bg-subtle"/>
+      <rect x="0" y="0" width="592" height="84" rx="6" class="ln"/>
+
+      <text x="14" y="20" font-size="14">😤</text>
+      <text x="34" y="20" font-size="12.5" font-weight="500" class="ink">frustration</text>
+      <text x="446" y="20" font-size="11.5" class="ink-faint">
+        <tspan class="ink" font-weight="500">82</tspan> matches
+      </text>
+      <text x="514" y="20" font-size="11.5" class="ink-faint">
+        <tspan class="ink" font-weight="500">39</tspan> events
+      </text>
+
+      <line x1="0" y1="36" x2="592" y2="36" class="ln"/>
+      <text x="14" y="50" font-size="9.5" letter-spacing="0.12em" class="ink-faint" font-weight="600">TOP SESSIONS</text>
+
+      <!-- top sessions -->
+      <g transform="translate(14, 60)">
+        <text x="0" y="0" font-size="11" class="ink">Tune anomaly threshold model</text>
+        <text x="430" y="0" font-size="9.5" class="ink-faint" text-anchor="end">fraud-platform</text>
+        <text x="568" y="0" font-size="11" font-weight="600" class="accent" text-anchor="end">22</text>
+      </g>
+      <g transform="translate(14, 76)">
+        <text x="0" y="0" font-size="11" class="ink">Add idempotent transfer endpoint</text>
+        <text x="430" y="0" font-size="9.5" class="ink-faint" text-anchor="end">payments-api</text>
+        <text x="568" y="0" font-size="11" font-weight="600" class="accent" text-anchor="end">14</text>
+      </g>
+    </g>
+
+    <!-- next 4 collapsed rows -->
+    <g transform="translate(0, 110)">
+      <rect x="0" y="0" width="592" height="34" rx="6" class="bg-subtle"/>
+      <rect x="0" y="0" width="592" height="34" rx="6" class="ln"/>
+      <text x="14" y="18" font-size="14">❓</text>
+      <text x="34" y="18" font-size="12.5" font-weight="500" class="ink">question</text>
+      <text x="446" y="18" font-size="11.5" class="ink-faint"><tspan class="ink" font-weight="500">94</tspan> matches</text>
+      <text x="514" y="18" font-size="11.5" class="ink-faint"><tspan class="ink" font-weight="500">61</tspan> events</text>
+    </g>
+    <g transform="translate(0, 152)">
+      <rect x="0" y="0" width="592" height="34" rx="6" class="bg-subtle"/>
+      <rect x="0" y="0" width="592" height="34" rx="6" class="ln"/>
+      <text x="14" y="18" font-size="14">🤔</text>
+      <text x="34" y="18" font-size="12.5" font-weight="500" class="ink">confusion</text>
+      <text x="446" y="18" font-size="11.5" class="ink-faint"><tspan class="ink" font-weight="500">61</tspan> matches</text>
+      <text x="514" y="18" font-size="11.5" class="ink-faint"><tspan class="ink" font-weight="500">44</tspan> events</text>
+    </g>
+    <g transform="translate(0, 194)">
+      <rect x="0" y="0" width="592" height="34" rx="6" class="bg-subtle"/>
+      <rect x="0" y="0" width="592" height="34" rx="6" class="ln"/>
+      <text x="14" y="18" font-size="14">💡</text>
+      <text x="34" y="18" font-size="12.5" font-weight="500" class="ink">breakthrough</text>
+      <text x="446" y="18" font-size="11.5" class="ink-faint"><tspan class="ink" font-weight="500">37</tspan> matches</text>
+      <text x="514" y="18" font-size="11.5" class="ink-faint"><tspan class="ink" font-weight="500">27</tspan> events</text>
+    </g>
+    <g transform="translate(0, 236)">
+      <rect x="0" y="0" width="592" height="34" rx="6" class="bg-subtle"/>
+      <rect x="0" y="0" width="592" height="34" rx="6" class="ln"/>
+      <text x="14" y="18" font-size="14">🙏</text>
+      <text x="34" y="18" font-size="12.5" font-weight="500" class="ink">gratitude</text>
+      <text x="446" y="18" font-size="11.5" class="ink-faint"><tspan class="ink" font-weight="500">31</tspan> matches</text>
+      <text x="514" y="18" font-size="11.5" class="ink-faint"><tspan class="ink" font-weight="500">24</tspan> events</text>
+    </g>
+  </g>
+
+  <!-- ===== By project section ===== -->
+  <g transform="translate(664, 396)">
+    <text x="0" y="0" font-size="10.5" letter-spacing="0.12em" class="ink-faint" font-weight="600">BY PROJECT</text>
+
+    <!-- project 1: fraud-platform -->
+    <g transform="translate(0, 14)">
+      <rect x="0" y="0" width="592" height="72" rx="6" class="bg-subtle"/>
+      <rect x="0" y="0" width="592" height="72" rx="6" class="ln"/>
+
+      <text x="14" y="20" font-size="13" font-weight="600" class="ink">fraud-platform</text>
+      <text x="568" y="20" font-size="10.5" class="ink-faint" text-anchor="end">147 markers across 5 sessions</text>
+
+      <!-- stacked horizontal bar -->
+      <g transform="translate(14, 32)">
+        <rect x="0" y="0" width="564" height="12" rx="6" class="bg-panel"/>
+        <rect x="0" y="0" width="564" height="12" rx="6" class="ln"/>
+        <clipPath id="cp1"><rect x="0" y="0" width="564" height="12" rx="6"/></clipPath>
+        <g clip-path="url(#cp1)">
+          <rect x="0"   y="0" width="186" height="12" class="c-frustration"/>
+          <rect x="186" y="0" width="118" height="12" class="c-confusion"/>
+          <rect x="304" y="0" width="92"  height="12" class="c-redirect"/>
+          <rect x="396" y="0" width="64"  height="12" class="c-regret"/>
+          <rect x="460" y="0" width="42"  height="12" class="c-question"/>
+          <rect x="502" y="0" width="32"  height="12" class="c-breakthrough"/>
+          <rect x="534" y="0" width="20"  height="12" class="c-decision"/>
+          <rect x="554" y="0" width="10"  height="12" class="c-gratitude"/>
+        </g>
+      </g>
+
+      <g transform="translate(14, 56)" font-size="10" class="ink-muted">
+        <text x="0" y="0">😤 49</text>
+        <text x="38" y="0">🤔 31</text>
+        <text x="78" y="0">🔀 24</text>
+        <text x="118" y="0">😬 17</text>
+        <text x="158" y="0">❓ 11</text>
+        <text x="194" y="0">💡 8</text>
+        <text x="226" y="0">⚡ 5</text>
+        <text x="256" y="0">🙏 2</text>
+      </g>
+    </g>
+
+    <!-- project 2: payments-api -->
+    <g transform="translate(0, 90)">
+      <rect x="0" y="0" width="592" height="72" rx="6" class="bg-subtle"/>
+      <rect x="0" y="0" width="592" height="72" rx="6" class="ln"/>
+
+      <text x="14" y="20" font-size="13" font-weight="600" class="ink">payments-api</text>
+      <text x="568" y="20" font-size="10.5" class="ink-faint" text-anchor="end">89 markers across 3 sessions</text>
+
+      <g transform="translate(14, 32)">
+        <rect x="0" y="0" width="564" height="12" rx="6" class="bg-panel"/>
+        <rect x="0" y="0" width="564" height="12" rx="6" class="ln"/>
+        <clipPath id="cp2"><rect x="0" y="0" width="564" height="12" rx="6"/></clipPath>
+        <g clip-path="url(#cp2)">
+          <rect x="0"   y="0" width="86"  height="12" class="c-frustration"/>
+          <rect x="86"  y="0" width="120" height="12" class="c-question"/>
+          <rect x="206" y="0" width="80"  height="12" class="c-decision"/>
+          <rect x="286" y="0" width="74"  height="12" class="c-breakthrough"/>
+          <rect x="360" y="0" width="64"  height="12" class="c-gratitude"/>
+          <rect x="424" y="0" width="50"  height="12" class="c-confusion"/>
+          <rect x="474" y="0" width="40"  height="12" class="c-redirect"/>
+          <rect x="514" y="0" width="50"  height="12" class="c-regret"/>
+        </g>
+      </g>
+
+      <g transform="translate(14, 56)" font-size="10" class="ink-muted">
+        <text x="0" y="0">😤 19</text>
+        <text x="38" y="0">❓ 22</text>
+        <text x="78" y="0">⚡ 13</text>
+        <text x="118" y="0">💡 11</text>
+        <text x="158" y="0">🙏 9</text>
+        <text x="194" y="0">🤔 7</text>
+        <text x="226" y="0">🔀 4</text>
+        <text x="256" y="0">😬 4</text>
+      </g>
+    </g>
+  </g>
+
+  <!-- ===== Hour of day section ===== -->
+  <g transform="translate(664, 580)">
+    <text x="0" y="0" font-size="10.5" letter-spacing="0.12em" class="ink-faint" font-weight="600">BY HOUR OF DAY (STACKED)</text>
+    <text x="0" y="18" font-size="11" class="ink-muted">When markers happen across your sessions. Each column is one hour, summed across all categories.</text>
+
+    <g transform="translate(0, 30)">
+      <rect x="0" y="0" width="592" height="148" rx="6" class="bg-subtle"/>
+      <rect x="0" y="0" width="592" height="148" rx="6" class="ln"/>
+
+      <!-- histogram bars - 24 hours -->
+      <g transform="translate(14, 120)">
+        <!-- early morning (low) -->
+        <g transform="translate(0, 0)">
+          <rect x="0"  y="-8"  width="20" height="8"  class="c-frustration"/>
+        </g>
+        <g transform="translate(24, 0)">
+          <rect x="0" y="-4"  width="20" height="4"  class="c-question"/>
+        </g>
+        <!-- 02-08: minimal -->
+        <g transform="translate(48, 0)"><rect x="0" y="-2" width="20" height="2" class="c-question"/></g>
+        <g transform="translate(72, 0)"></g>
+        <g transform="translate(96, 0)"></g>
+        <g transform="translate(120, 0)"></g>
+        <g transform="translate(144, 0)"></g>
+        <g transform="translate(168, 0)"></g>
+        <g transform="translate(192, 0)"><rect x="0" y="-6" width="20" height="6" class="c-question"/></g>
+        <!-- 09 -->
+        <g transform="translate(216, 0)">
+          <rect x="0" y="-12" width="20" height="6"  class="c-question"/>
+          <rect x="0" y="-22" width="20" height="10" class="c-confusion"/>
+        </g>
+        <!-- 10 -->
+        <g transform="translate(240, 0)">
+          <rect x="0" y="-14" width="20" height="6"  class="c-question"/>
+          <rect x="0" y="-30" width="20" height="16" class="c-confusion"/>
+          <rect x="0" y="-44" width="20" height="14" class="c-frustration"/>
+        </g>
+        <!-- 11 -->
+        <g transform="translate(264, 0)">
+          <rect x="0" y="-18" width="20" height="8"  class="c-question"/>
+          <rect x="0" y="-42" width="20" height="24" class="c-frustration"/>
+          <rect x="0" y="-58" width="20" height="16" class="c-confusion"/>
+        </g>
+        <!-- 12 -->
+        <g transform="translate(288, 0)">
+          <rect x="0" y="-10" width="20" height="6"  class="c-question"/>
+          <rect x="0" y="-26" width="20" height="16" class="c-frustration"/>
+          <rect x="0" y="-36" width="20" height="10" class="c-confusion"/>
+        </g>
+        <!-- 13 -->
+        <g transform="translate(312, 0)">
+          <rect x="0" y="-12" width="20" height="6"  class="c-question"/>
+          <rect x="0" y="-32" width="20" height="20" class="c-frustration"/>
+          <rect x="0" y="-44" width="20" height="12" class="c-confusion"/>
+          <rect x="0" y="-52" width="20" height="8"  class="c-regret"/>
+        </g>
+        <!-- 14 -->
+        <g transform="translate(336, 0)">
+          <rect x="0" y="-20" width="20" height="10" class="c-question"/>
+          <rect x="0" y="-46" width="20" height="26" class="c-frustration"/>
+          <rect x="0" y="-66" width="20" height="20" class="c-confusion"/>
+          <rect x="0" y="-78" width="20" height="12" class="c-regret"/>
+          <rect x="0" y="-86" width="20" height="8"  class="c-redirect"/>
+        </g>
+        <!-- 15 -->
+        <g transform="translate(360, 0)">
+          <rect x="0" y="-22" width="20" height="12" class="c-question"/>
+          <rect x="0" y="-54" width="20" height="32" class="c-frustration"/>
+          <rect x="0" y="-78" width="20" height="24" class="c-confusion"/>
+          <rect x="0" y="-92" width="20" height="14" class="c-regret"/>
+          <rect x="0" y="-104" width="20" height="12" class="c-redirect"/>
+        </g>
+        <!-- 16 (peak) -->
+        <g transform="translate(384, 0)">
+          <rect x="0" y="-18" width="20" height="10" class="c-question"/>
+          <rect x="0" y="-52" width="20" height="34" class="c-frustration"/>
+          <rect x="0" y="-72" width="20" height="20" class="c-confusion"/>
+          <rect x="0" y="-86" width="20" height="14" class="c-regret"/>
+          <rect x="0" y="-102" width="20" height="16" class="c-redirect"/>
+          <rect x="0" y="-110" width="20" height="8"  class="c-decision"/>
+        </g>
+        <!-- 17 -->
+        <g transform="translate(408, 0)">
+          <rect x="0" y="-16" width="20" height="8"  class="c-question"/>
+          <rect x="0" y="-40" width="20" height="24" class="c-frustration"/>
+          <rect x="0" y="-58" width="20" height="18" class="c-confusion"/>
+          <rect x="0" y="-72" width="20" height="14" class="c-decision"/>
+          <rect x="0" y="-86" width="20" height="14" class="c-breakthrough"/>
+        </g>
+        <!-- 18 -->
+        <g transform="translate(432, 0)">
+          <rect x="0" y="-14" width="20" height="6"  class="c-question"/>
+          <rect x="0" y="-30" width="20" height="16" class="c-frustration"/>
+          <rect x="0" y="-46" width="20" height="16" class="c-decision"/>
+          <rect x="0" y="-62" width="20" height="16" class="c-breakthrough"/>
+          <rect x="0" y="-72" width="20" height="10" class="c-gratitude"/>
+        </g>
+        <!-- 19 -->
+        <g transform="translate(456, 0)">
+          <rect x="0" y="-10" width="20" height="6"  class="c-question"/>
+          <rect x="0" y="-22" width="20" height="12" class="c-decision"/>
+          <rect x="0" y="-36" width="20" height="14" class="c-breakthrough"/>
+          <rect x="0" y="-50" width="20" height="14" class="c-gratitude"/>
+        </g>
+        <!-- 20 -->
+        <g transform="translate(480, 0)">
+          <rect x="0" y="-8"  width="20" height="4"  class="c-decision"/>
+          <rect x="0" y="-22" width="20" height="14" class="c-celebration"/>
+          <rect x="0" y="-32" width="20" height="10" class="c-gratitude"/>
+        </g>
+        <!-- 21 -->
+        <g transform="translate(504, 0)">
+          <rect x="0" y="-12" width="20" height="6"  class="c-celebration"/>
+          <rect x="0" y="-20" width="20" height="8"  class="c-gratitude"/>
+        </g>
+        <!-- 22 -->
+        <g transform="translate(528, 0)">
+          <rect x="0" y="-6"  width="20" height="4"  class="c-gratitude"/>
+        </g>
+        <!-- 23 -->
+        <g transform="translate(552, 0)"></g>
+      </g>
+
+      <!-- x-axis labels -->
+      <g transform="translate(14, 134)" font-size="9.5" class="ink-faint">
+        <text x="0">00</text>
+        <text x="136">06</text>
+        <text x="280">12</text>
+        <text x="420">18</text>
+        <text x="552">23</text>
+      </g>
+    </g>
+  </g>
+
+  <!-- annotation pointing to peak -->
+  <g transform="translate(910, 624)">
+    <text x="0" y="0" font-size="11" class="ink-muted" font-style="italic">peak afternoon</text>
+    <text x="0" y="14" font-size="11" class="ink-muted" font-style="italic">frustration cluster</text>
+    <path d="M 90 -4 Q 130 4 144 28" stroke="#a0acff" stroke-width="1" fill="none" stroke-dasharray="3 2"/>
+  </g>
+</svg>

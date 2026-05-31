@@ -91,7 +91,7 @@ export function TranscriptPanel({
   const markerCounts = React.useMemo(() => {
     const out: Record<MarkerCategory, number> = {
       frustration: 0, confusion: 0, breakthrough: 0, celebration: 0, regret: 0,
-      decision: 0, redirect: 0, gratitude: 0,
+      decision: 0, redirect: 0, gratitude: 0, question: 0,
     };
     for (const c of MARKER_CATEGORIES) out[c] = session.markers?.[c]?.eventIds.length ?? 0;
     return out;

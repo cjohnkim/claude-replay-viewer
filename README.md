@@ -14,6 +14,10 @@ Built for product folks and engineers who want to understand (or share) *how* a 
 
 *The detail view. Transcript on the left with per-event marker badges. The Vibes filter row at the top lets you narrow the transcript to specific categories and jump between matches. Stage panel in the center shows the current event with detected markers called out. The timeline scrubber surfaces marker positions across the whole session so you can see the emotional shape at a glance.*
 
+![Vibes summary — analytics across the whole collection](./public/screenshots/03-vibes-summary.svg)
+
+*Vibes summary drawer. Per-category aggregates with top sessions, per-project distribution showing which projects accumulate which categories, and a 24-hour stacked histogram surfacing time-of-day patterns ("most frustration in the afternoon" or "breakthroughs cluster in early evening").*
+
 ---
 
 ## What you get
@@ -129,12 +133,21 @@ The viewer scans your *user-prompt* text (not Claude's responses) for eight cate
 | ⚡ **decision** | "let's go with", "ship it", "going with", "the call is", "let's commit" |
 | 🔀 **redirect** | "let's pivot", "different approach", "actually let's", "new direction" |
 | 🙏 **gratitude** | "thanks", "appreciate", "nice catch", "good call", "well done" |
+| ❓ **question** | actionable inquiry — "how do I", "should we", "what's the best way", "can you explain" (distinct from confusion, which is reactive) |
 
 All detection is local — the regex sets live in [`lib/markers.ts`](./lib/markers.ts). Conservative by design: word-bounded curses, specific phrases for the non-curse categories. Sarcasm ("great", "wonderful") is deliberately not caught — too ambiguous.
 
 Each session card surfaces matched categories as small badges. Hover for the detected sample phrases. The "Vibes" facet row at the top of the picker lets you filter to sessions where a given category fired. The search bar also matches against detected marker text — so typing `wtf` or `got it` finds the sessions where you said those things.
 
 Inside a session, the transcript shows the same marker badges next to each event that triggered them. A Vibes filter row above the transcript lets you narrow to specific categories and jump between matches — useful in long sessions where you want to skip straight to the frustration moments or the breakthrough turns.
+
+The **timeline scrubber** at the bottom of the session view surfaces marker positions as emoji dots distributed along the track — so you can see the emotional shape of the whole session at a glance and click any dot to jump straight to that moment.
+
+The **Vibes summary** button on the picker opens an analytics drawer covering the whole collection:
+
+- **By category** — total counts per marker plus the top 3 sessions in each, click-through to the session
+- **By project** — stacked horizontal bars showing which projects accumulate which categories
+- **By hour of day** — 24-bucket stacked histogram surfacing time-of-day patterns ("most frustration in the afternoon", "breakthroughs cluster in early evening")
 
 Two uses for this:
 

@@ -2,9 +2,10 @@
 import * as React from "react";
 import Link from "next/link";
 import type { Session, Project } from "@/lib/types";
-import { GitBranch, Search, ArrowRight, Clock, Files, FlagTriangleRight, Hash, Calendar, Zap, type LucideIcon } from "lucide-react";
+import { GitBranch, Search, ArrowRight, Clock, Files, FlagTriangleRight, Hash, Calendar, Zap, BarChart3, type LucideIcon } from "lucide-react";
 import { cn, formatRelativeTime } from "@/lib/utils";
 import { MARKER_CATEGORIES, MARKER_META, type MarkerCategory } from "@/lib/markers";
+import { VibesSummary } from "./vibes-summary";
 
 interface Props {
   groups: { project: Project; sessions: Session[] }[];
@@ -47,7 +48,7 @@ export function SessionPicker({ groups }: Props) {
   const markerCounts = React.useMemo(() => {
     const out: Record<MarkerCategory, number> = {
       frustration: 0, confusion: 0, breakthrough: 0, celebration: 0, regret: 0,
-      decision: 0, redirect: 0, gratitude: 0,
+      decision: 0, redirect: 0, gratitude: 0, question: 0,
     };
     for (const g of groups) {
       for (const s of g.sessions) {
@@ -58,6 +59,8 @@ export function SessionPicker({ groups }: Props) {
     }
     return out;
   }, [groups]);
+
+  const [showAnalytics, setShowAnalytics] = React.useState(false);
 
   const filteredGroups = groups
     .map((g) => ({
@@ -122,8 +125,17 @@ export function SessionPicker({ groups }: Props) {
             <Stat label="Projects" value={groups.length} />
             <Stat label="Sessions" value={totalSessions} />
             <Stat label="Events" value={totalEvents} />
+            <button
+              onClick={() => setShowAnalytics(true)}
+              className="ml-2 inline-flex items-center gap-1.5 rounded-md border border-accent/40 bg-accent/10 px-2.5 py-1.5 text-[11px] font-medium text-accent-glow hover:bg-accent/20"
+              title="Open marker analytics across the collection"
+            >
+              <BarChart3 size={13} />
+              <span>Vibes summary</span>
+            </button>
           </div>
         </header>
+        <VibesSummary groups={groups} open={showAnalytics} onClose={() => setShowAnalytics(false)} />
 
         {/* Search */}
         <label className="mt-8 flex items-center gap-2 rounded-lg border border-line bg-bg-panel px-3 py-2 focus-within:border-accent/40">

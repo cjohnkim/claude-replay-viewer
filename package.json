@@ -1,6 +1,6 @@
 {
   "name": "claude-replay-viewer",
-  "version": "0.4.0",
+  "version": "0.5.0",
   "description": "Interactive timeline viewer for Claude Code sessions. Reads ~/.claude/projects/ and renders transcript, tool calls, file changes, and per-session token consumption.",
   "keywords": [
     "claude-code",

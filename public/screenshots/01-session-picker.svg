@@ -111,8 +111,15 @@
       <text x="836" y="12" font-size="11" font-weight="500" class="ink-muted">gratitude</text>
       <text x="898" y="12" font-size="10" class="ink-faint">13</text>
 
+      <!-- question -->
+      <rect x="922" y="0" width="100" height="22" rx="11" class="bg-panel"/>
+      <rect x="922" y="0" width="100" height="22" rx="11" class="ln"/>
+      <text x="932" y="12" font-size="11">❓</text>
+      <text x="950" y="12" font-size="11" font-weight="500" class="ink-muted">question</text>
+      <text x="1006" y="12" font-size="10" class="ink-faint">18</text>
+
       <!-- clear vibes -->
-      <text x="928" y="12" font-size="11" class="ink-faint">clear vibes</text>
+      <text x="1036" y="12" font-size="11" class="ink-faint">clear vibes</text>
     </g>
   </g>
 
