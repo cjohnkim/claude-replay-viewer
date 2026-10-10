@@ -14,6 +14,19 @@ npm run dev
 
 The session picker links to the demo. `/` and `/session/[id]` retain Claude JSONL ingestion from `~/.claude/projects/`. An optional server-only `CLAUDE_PROJECTS_DIR` selects another root; browser tests use this to read only the committed synthetic coding fixture. The bank route imports its fixtures directly and never reads local Claude logs.
 
+## Visual workspace
+
+The demo opens with synchronized **agent swimlanes** and a **knowledge map**, above the original event inspector. The playback bar stays available while scrolling.
+
+- Swimlanes place each participant's actions on the same time axis. Reached actions fill in as playback advances; later events remain faint outlines. Select a numbered action (mouse, Enter or Space) to pause and inspect that moment.
+- Curved arrows appear only when a recorded evidence handoff has occurred. `evidenceTransfers` explicitly records a source event for each delivered record; chronology or shared case membership alone never creates an arrow. The handoff toggle can hide these links.
+- The knowledge map follows the selected event's participant. **Before action** uses only its exact recorded context; **After event** adds evidence received at that event and highlights those additions in green. Changing events resets this view to Before action.
+- Select a populated evidence category to inspect the original snapshot, source/version, observation time and content. Dashed categories mean the record was not supplied to this participant, not that it was missing from the bank.
+- Policy events show their unmet conditions or denial alongside the map. These are outcomes recorded at that event, explicitly distinguished from prior context.
+- **Open event details** moves to the existing inspector. Transcript auto-follow stays inside its panel so playback never pulls the page away from the visual workspace. The overview can be collapsed; narrow screens use a horizontally scrollable lane chart and stacked panels.
+
+The knowledge categories are specific to this synthetic ACH dataset. A general adapter should supply its own evidence taxonomy. This remains a single-case visualization, not a large-population constellation.
+
 ## Scenario and accounting
 
 Northstar sent an outgoing $4,800 ACH credit to a supplier. The supplier's receiving account is closed, producing an incoming R02 return. Separately, Northstar's own account at the fictional Cedar Bank closed administratively after the payment. These are two distinct accounts. The demonstration starts with funds already recorded in an unallocated return liability, and a return notification that still needs independent settlement evidence.
@@ -54,6 +67,7 @@ Playback uses the existing compressed timing (0.5×, 1×, 2×, 4×), not measure
 | `TranscriptPanel` | Reused directly, including chronological selection, tool expansion, text search and event filtering; optional agent filtering and identity labels added |
 | `useReplayPlayback` | Extracted the existing chronological timer so both viewers use the same behavior |
 | `ReplayViewer` | Keeps the coding-oriented panels and route; shares the playback hook |
+| `AgentVisualization` / `lib/trace-visualization.ts` | Synchronized SVG lanes and grouped knowledge map; explicit evidence-transfer edges and time-scoped context projections |
 | `BankReplayViewer` | New bank inspection surface with context before action, newly received evidence, tool I/O, policy checks, effects, receipts and causal navigation |
 | `lib/agent-trace.ts` | Typed trace envelope, cursor projection and deterministic fixture/provenance validation |
 | `lib/demo/bank-simulator.ts` | Pure in-memory policy evaluation and bounded execution, with version and duplicate guards |
@@ -77,7 +91,7 @@ The tests exercise deterministic serialization, per-agent knowledge and no futur
 
 Browser tests cover context inspection, filters including an empty result, rewind/reset, playback completion, all scenario outcomes, desktop/mobile layout and a real synthetic JSONL session route. Playwright uses port 3034 and starts/stops its own server.
 
-Validation completed in the implementation environment: 25 model/ingestion tests, all eight browser checks, TypeScript, ESLint and an optimized Next build. Desktop and mobile screenshots were also inspected.
+Validation completed in the implementation environment: 33 model/ingestion/visualization tests, all eleven browser checks, TypeScript, ESLint and an optimized Next build. Desktop and mobile screenshots were also inspected.
 
 The repository previously had no test suite and `next lint` prompted for configuration. This branch supplies a minimal Next ESLint configuration, fixes an existing unescaped apostrophe in the 404 page, and explicitly retains plain image rendering for arbitrary local replay image sources.
 

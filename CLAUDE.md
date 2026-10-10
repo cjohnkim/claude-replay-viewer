@@ -4,7 +4,7 @@
 
 The older handoff below predates real JSONL ingestion. Current `/` and `/session/[id]` routes use `lib/ingest.ts` and read `~/.claude/projects/` (or the server-only `CLAUDE_PROJECTS_DIR` override). The three coding fixtures remain available for regression tests.
 
-`/demo/ach` is a separate, entirely synthetic bank-agent demonstration. Read `docs/twisp-lens-demo.md` for its model, scenarios, checks and production limits. It reuses the transcript, timeline and extracted playback hook while keeping bank-specific inspection separate. `npm run check`, `npm run build` and `npm run test:e2e` are the verification commands. No bank/model credentials are needed.
+`/demo/ach` is a separate, entirely synthetic bank-agent demonstration. Read `docs/twisp-lens-demo.md` for its model, scenarios, checks and production limits. It reuses the transcript, timeline and extracted playback hook while keeping bank-specific inspection separate. `components/agent-visualization.tsx` adds the synchronized swimlanes and knowledge map; `lib/trace-visualization.ts` derives views only from explicit transfer references and per-event context. `npm run check`, `npm run build` and `npm run test:e2e` are the verification commands. No bank/model credentials are needed.
 
 ## Original prototype notes (historical)
 

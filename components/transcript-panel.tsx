@@ -16,6 +16,7 @@ interface Props {
   search: string;
   onSearchChange: (s: string) => void;
   agentId?: string;
+  scrollWithinPanel?: boolean;
 }
 
 export function TranscriptPanel({
@@ -26,10 +27,12 @@ export function TranscriptPanel({
   search,
   onSearchChange,
   agentId = "",
+  scrollWithinPanel = false,
 }: Props) {
   const [expanded, setExpanded] = React.useState<Record<string, boolean>>({});
   const [markerFilter, setMarkerFilter] = React.useState<Set<MarkerCategory>>(new Set());
   const itemRefs = React.useRef<Record<string, HTMLButtonElement | null>>({});
+  const scrollRef = React.useRef<HTMLDivElement | null>(null);
 
   // Build a lookup: event id -> ordered list of marker categories it triggered.
   const eventMarkers = React.useMemo(() => {
@@ -49,8 +52,15 @@ export function TranscriptPanel({
     const ev = session.events[selectedIndex];
     if (!ev) return;
     const el = itemRefs.current[ev.id];
-    el?.scrollIntoView({ behavior: "smooth", block: "nearest" });
-  }, [selectedIndex, session.events]);
+    if (scrollWithinPanel && el && scrollRef.current) {
+      const panel = scrollRef.current;
+      const bounds = panel.getBoundingClientRect();
+      const item = el.getBoundingClientRect();
+      const delta = item.top < bounds.top ? item.top - bounds.top - 12
+        : item.bottom > bounds.bottom ? item.bottom - bounds.bottom + 12 : 0;
+      if (delta) panel.scrollBy({ top: delta, behavior: "smooth" });
+    } else el?.scrollIntoView({ behavior: "smooth", block: "nearest" });
+  }, [selectedIndex, session.events, scrollWithinPanel]);
 
   const toggleMarker = React.useCallback((c: MarkerCategory) => {
     setMarkerFilter((prev) => {
@@ -172,7 +182,7 @@ export function TranscriptPanel({
         </div>
       )}
 
-      <div className="scroll-fade-y flex-1 overflow-y-auto px-2 py-3">
+      <div ref={scrollRef} className="scroll-fade-y flex-1 overflow-y-auto px-2 py-3">
         {visible.length === 0 && <p className="p-3 text-sm text-ink-muted">No events match these filters.</p>}
         <ol className="relative space-y-1.5">
           <span className="pointer-events-none absolute bottom-2 left-[19px] top-2 w-px bg-line-subtle" aria-hidden />

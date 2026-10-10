@@ -6,6 +6,7 @@ import type { Session, ReplayEvent, EventType } from "@/lib/types";
 import type { EvidenceSnapshot, JsonValue } from "@/lib/agent-trace";
 import { businessStateAt, contextAtEvent } from "@/lib/agent-trace";
 import { createAchDemo, SCENARIOS, type Scenario } from "@/lib/demo/ach-trace";
+import { AgentVisualization } from "./agent-visualization";
 import { TimelineScrubber } from "./timeline-scrubber";
 import { TranscriptPanel } from "./transcript-panel";
 import { useReplayPlayback } from "./use-replay-playback";
@@ -58,7 +59,7 @@ function BankReplayViewer({ session, scenario, onScenario }: {
   }, [last, selectedIndex, select]);
 
   return (
-    <div className="cinematic-bg flex min-h-screen flex-col text-ink lg:h-screen lg:overflow-hidden">
+    <div className="cinematic-bg flex min-h-screen flex-col text-ink">
       <header className="border-b border-line bg-bg-panel/90 px-5 py-4">
         <div className="flex flex-wrap items-center justify-between gap-3">
           <div className="flex items-center gap-3">
@@ -85,6 +86,8 @@ function BankReplayViewer({ session, scenario, onScenario }: {
         </div>
       </header>
 
+      <AgentVisualization session={session} selectedIndex={selectedIndex} onSelect={select} playing={playing} />
+
       <div className="flex flex-wrap items-center gap-2 border-b border-line bg-bg-panel/60 px-5 py-2">
         <label htmlFor="agent" className="text-xs text-ink-muted">Agent</label>
         <select id="agent" value={agentId} onChange={e => setAgentId(e.target.value)} className="rounded border border-line bg-bg-panel px-2 py-1 text-xs">
@@ -100,11 +103,11 @@ function BankReplayViewer({ session, scenario, onScenario }: {
         <p className="ml-auto text-[10.5px] text-ink-faint">Filters narrow the transcript. Playback and state follow the full case.</p>
       </div>
 
-      <div className="grid min-h-0 flex-1 lg:grid-cols-[320px_minmax(0,1fr)_290px] xl:grid-cols-[350px_minmax(0,1fr)_310px]">
+      <div className="grid min-h-0 lg:h-[640px] lg:grid-cols-[320px_minmax(0,1fr)_290px] xl:grid-cols-[350px_minmax(0,1fr)_310px]">
         <aside aria-label="Case transcript" className="h-[380px] border-b border-line bg-bg-panel/50 lg:h-auto lg:min-h-0 lg:border-b-0 lg:border-r">
-          <TranscriptPanel session={session} selectedIndex={selectedIndex} onSelect={select} filterTypes={new Set(eventType ? [eventType] : [])} search={search} onSearchChange={setSearch} agentId={agentId} />
+          <TranscriptPanel session={session} selectedIndex={selectedIndex} onSelect={select} filterTypes={new Set(eventType ? [eventType] : [])} search={search} onSearchChange={setSearch} agentId={agentId} scrollWithinPanel />
         </aside>
-        <main aria-label="Event inspection" className="min-w-0 overflow-y-auto p-5">
+        <main id="event-inspector" aria-label="Event inspection" className="min-w-0 overflow-y-auto p-5">
           <div className="mb-4 flex items-center gap-3">
             <div className="rounded-lg border border-line bg-bg-panel p-3"><EventIcon type={event.type} className="h-5 w-5" /></div>
             <div>
@@ -156,7 +159,7 @@ function BankReplayViewer({ session, scenario, onScenario }: {
           <p className="mt-6 text-[11px] leading-relaxed text-ink-faint">All names, records and permissions are fictional. Replay never performs a financial write. Balances and effects come from a deterministic in-memory simulator.</p>
         </aside>
       </div>
-      <div className="overflow-x-auto">
+      <div className="sticky bottom-0 z-20 overflow-x-auto bg-bg-panel">
         <TimelineScrubber session={session} selectedIndex={selectedIndex} onSelect={select} playing={playing}
           onPlayToggle={() => { if (!playing && selectedIndex === last) setSelectedIndex(0); setPlaying(p => !p); }} speed={speed} onSpeedChange={setSpeed}
           onJumpNext={() => select(Math.min(last, selectedIndex + 1))} onJumpPrev={() => select(Math.max(0, selectedIndex - 1))} />

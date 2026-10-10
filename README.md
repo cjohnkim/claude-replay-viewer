@@ -39,6 +39,8 @@ The whole viewer is read-only and local-first — your session data never leaves
 
 Visit **`/demo/ach`** after `npm ci && npm run dev` (port 3033). Follow three simulated agents and a deterministic policy service through a $4,800 ACH return involving a closed customer account. Inspect each participant's context before acting, evidence handoffs, scoped authorizations, state changes and balanced ledger effects.
 
+The demo opens with **agent swimlanes** showing time-aligned actions and evidence handoffs, plus a **knowledge map** that separates context before an action from evidence received afterward. Select any action or evidence category to inspect it; the original paper trail remains below.
+
 The demo includes eligible, missing-evidence, fraud-closure and duplicate-delivery scenarios. It runs locally without a model API, bank connection or Twisp dependency. Account reopening is a restricted, fictional demo policy. Existing Claude replays remain at `/session/[id]`.
 
 See [the demo guide and production architecture assessment](docs/twisp-lens-demo.md) for the walkthrough, boundaries and reuse recommendations. Run `npm run check`, `npm run build`, and `npm run test:e2e` (install Playwright Chromium first) to verify.

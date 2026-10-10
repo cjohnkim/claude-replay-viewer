@@ -53,6 +53,8 @@ export interface AgentEventContext {
   contextEvidenceIds: string[];
   /** Explicit delivery at the end of this event, available on the actor's next action. */
   receivedEvidenceIds: string[];
+  /** Explicit delivery provenance; omitted for direct reads from external sources. */
+  evidenceTransfers?: { evidenceId: string; fromEventId: string }[];
   tool?: {
     callId: string;
     name: string;
@@ -118,6 +120,16 @@ export function validateAgentTrace(session: Session): string[] {
       const snapshot = trace.evidence[id];
       if (!snapshot || !Number.isFinite(Date.parse(snapshot.observedAt)) || Date.parse(snapshot.observedAt) > time) {
         errors.push(`${event.id}: missing or future evidence ${id}`);
+      }
+    }
+    for (const transfer of a.evidenceTransfers ?? []) {
+      const source = session.events.find(e => e.id === transfer.fromEventId);
+      const snapshot = trace.evidence[transfer.evidenceId];
+      const isGrant = source?.agent?.policy && snapshot?.data.decisionId === source.agent.policy.id;
+      if (!seen.has(transfer.fromEventId) || !a.receivedEvidenceIds.includes(transfer.evidenceId) ||
+          source?.agent?.actorId === a.actorId ||
+          (!source?.agent?.receivedEvidenceIds.includes(transfer.evidenceId) && !isGrant)) {
+        errors.push(`${event.id}: invalid evidence transfer`);
       }
     }
     for (const id of a.policy?.evidenceIds ?? []) {

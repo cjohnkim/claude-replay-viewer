@@ -26,12 +26,19 @@ export function createAchDemo(scenario: Scenario = "eligible"): Session {
     return id;
   };
   function emit(actorId: string, type: EventType, title: string, description: string,
-    fields: Partial<AgentEventContext> = {}, receivedEvidenceIds: string[] = []) {
+    fields: Partial<AgentEventContext> = {}, receivedEvidenceIds: string[] = [], fromActor?: string) {
+    const transfers = fromActor ? receivedEvidenceIds.map(evidenceId => {
+      const source = [...events].reverse().find(e => e.agent?.actorId === fromActor &&
+        (e.agent.receivedEvidenceIds.includes(evidenceId) ||
+          (e.agent.policy && e.agent.policy.id === evidence[evidenceId].data.decisionId)));
+      if (!source) throw new Error(`Missing delivery source for ${evidenceId} from ${fromActor}`);
+      return { evidenceId, fromEventId: source.id };
+    }) : undefined;
     const id = `ach-${String(events.length + 1).padStart(2, "0")}`;
     events.push({ id, timestamp: now(), sequenceNumber: events.length + 1, type, title, description,
       agent: { actorId, runId: `${CASE_ID}/${actorId}`, caseId: CASE_ID,
         causedBy: events.length ? [events[events.length - 1].id] : [],
-        contextEvidenceIds: [...(knowledge.get(actorId) ?? [])], receivedEvidenceIds, ...fields } });
+        contextEvidenceIds: [...(knowledge.get(actorId) ?? [])], receivedEvidenceIds, ...(transfers ? { evidenceTransfers: transfers } : {}), ...fields } });
     knowledge.set(actorId, [...new Set([...(knowledge.get(actorId) ?? []), ...receivedEvidenceIds])]);
     return id;
   }
@@ -59,11 +66,11 @@ export function createAchDemo(scenario: Scenario = "eligible"): Session {
     scope: "One return; no outgoing payments; no general account reactivation.",
   });
   emit("investigator", "evidence", "Load the bounded handling policy", "This fictional policy is a demo assumption, not an ACH rule or a production control.", {}, [policy]);
-  emit("policy-service", "evidence", "Receive the initial evidence packet", "Only the inbound notification, closed-account snapshot and policy have been delivered.", {}, [inbound, account, policy]);
+  emit("policy-service", "evidence", "Receive the initial evidence packet", "Only the inbound notification, closed-account snapshot and policy have been delivered.", {}, [inbound, account, policy], "investigator");
   const incomplete: Eligibility = { originalMatched: false, receiptConfirmed: false, closureEligible: false, evidenceIds: [inbound, account, policy] };
   const preliminary = evaluatePolicy(state, incomplete, "reopen_for_return", now(), "decision-01");
   emit("policy-service", "policy_decision", "Pause: three facts are still missing", "Original debit, confirmed receipt and closure eligibility must be established before any write.", { policy: preliminary });
-  emit("evidence-agent", "evidence", "Assign the missing-evidence investigation", "The evidence agent receives the case and policy; it does not automatically share the investigator's memory.", {}, [inbound, policy]);
+  emit("evidence-agent", "evidence", "Assign the missing-evidence investigation", "The evidence agent receives the case and policy; it does not automatically share the investigator's memory.", {}, [inbound, policy], "investigator");
   const original = snapshot("original-payment-v7", "synthetic/payment-archive", "7", "Exact scoped match to Northstar's original $4,800 debit", {
     tenantId: "cedar-demo", paymentId: "payment-SYN-1029", originalTrace: "SYN-1029", amountMinor: AMOUNT,
     currency: "USD", customerId: "northstar-demo", originalDebitId: "debit-SYN-1029", candidateCount: 1,
@@ -84,15 +91,15 @@ export function createAchDemo(scenario: Scenario = "eligible"): Session {
   tool("evidence-agent", "read_closure_review", "Establish why the customer account closed", "A closed status alone says nothing about eligibility. Retrieve the reason and current restrictions.",
     { accountId: "account-SYN-NORTHSTAR" }, { evidenceId: closure }, [closure]);
   const packet = [inbound, account, policy, original, receipt, closure];
-  emit("investigator", "evidence", "Receive the investigation dossier", "The investigator can now see the collected results and their source versions.", {}, [original, receipt, closure]);
-  emit("policy-service", "evidence", "Receive evidence for authorization", "The deterministic policy service receives the same exact dossier before making a decision.", {}, [original, receipt, closure]);
+  emit("investigator", "evidence", "Receive the investigation dossier", "The investigator can now see the collected results and their source versions.", {}, [original, receipt, closure], "evidence-agent");
+  emit("policy-service", "evidence", "Receive evidence for authorization", "The deterministic policy service receives the same exact dossier before making a decision.", {}, [original, receipt, closure], "investigator");
   const eligibility: Eligibility = { originalMatched: true, receiptConfirmed: receiptPresent, closureEligible: true, evidenceIds: packet };
   const reopen = evaluatePolicy(state, eligibility, "reopen_for_return", now(), "decision-02");
   emit("policy-service", "policy_decision", reopen.outcome === "allow" ? "Authorize a restricted account-state change" : "Hold the case: policy does not permit a write",
     reopen.outcome === "allow" ? "Grant binds posting-agent, operation, policy version, state version and expiry." : "No account-state change and no posting occur. Review is still required.", { policy: reopen });
   if (reopen.outcome !== "allow") {
     const held = snapshot("held-outcome", "synthetic/policy-service", "1", "Case remains held without financial writes", { outcome: reopen.outcome, decisionId: reopen.id });
-    emit("investigator", "evidence", "Receive the held-case outcome", "The investigator receives the explicit non-authorization result.", {}, [held]);
+    emit("investigator", "evidence", "Receive the held-case outcome", "The investigator receives the explicit non-authorization result.", {}, [held], "policy-service");
     emit("investigator", "checkpoint", "Review required; funds remain unallocated", "The agent cannot substitute confidence for missing evidence or override a fraud hold.", { stateChanges: [
       { entityId: CASE_ID, field: "caseStatus", before: "investigating", after: "held" },
     ] });
@@ -101,7 +108,7 @@ export function createAchDemo(scenario: Scenario = "eligible"): Session {
       decisionId: reopen.id, action: reopen.action, expectedVersion: state.version,
       operationId: OPERATION_ID, principalId: EXECUTOR, expiresAt: reopen.grant!.expiresAt,
     });
-    emit(EXECUTOR, "evidence", "Deliver the bound authorization and evidence", "Posting-agent receives only the explicitly delivered packet. It has no earlier implicit knowledge.", {}, [...packet, authorization]);
+    emit(EXECUTOR, "evidence", "Deliver the bound authorization and evidence", "Posting-agent receives only the explicitly delivered packet. It has no earlier implicit knowledge.", {}, [...packet, authorization], "policy-service");
     const reopened = executeAction(state, reopen, eligibility, { action: "reopen_for_return", principalId: EXECUTOR, operationId: OPERATION_ID, now: now() });
     state = reopened.state;
     const reopenedSnapshot = snapshot("account-v2", "synthetic/account-service", "2", "Account now permits this return credit only", {
@@ -110,7 +117,7 @@ export function createAchDemo(scenario: Scenario = "eligible"): Session {
     emit(EXECUTOR, "state_change", "Reopen for this return credit only", "Current state and permission pass the commit-time checks. Outgoing payments remain disabled.", {
       stateChanges: reopened.changes, tool: { callId: "call-reopen", name: "reopen_for_return", input: { decisionId: reopen.id, expectedVersion: 1, operationId: OPERATION_ID }, output: { status: state.accountStatus, version: state.version }, status: "success" },
     }, [reopenedSnapshot]);
-    emit("policy-service", "evidence", "Receive the account-state receipt", "The old account snapshot remains immutable. Version 2 is explicitly delivered for the posting decision.", {}, [reopenedSnapshot]);
+    emit("policy-service", "evidence", "Receive the account-state receipt", "The old account snapshot remains immutable. Version 2 is explicitly delivered for the posting decision.", {}, [reopenedSnapshot], EXECUTOR);
     const postingEligibility = { ...eligibility, evidenceIds: [...packet, reopenedSnapshot] };
     const posting = evaluatePolicy(state, postingEligibility, "post_return", now(), "decision-03");
     emit("policy-service", "policy_decision", "Authorize the exact $4,800 allocation", "Re-evaluate against account version 2 and the unconsumed return. The earlier grant cannot authorize a posting.", { policy: posting });
@@ -118,7 +125,7 @@ export function createAchDemo(scenario: Scenario = "eligible"): Session {
       decisionId: posting.id, action: posting.action, expectedVersion: state.version,
       operationId: OPERATION_ID, principalId: EXECUTOR, expiresAt: posting.grant!.expiresAt,
     });
-    emit(EXECUTOR, "evidence", "Receive the posting authorization", "The executor now holds a separate action-specific grant.", {}, [postingGrant]);
+    emit(EXECUTOR, "evidence", "Receive the posting authorization", "The executor now holds a separate action-specific grant.", {}, [postingGrant], "policy-service");
     const posted = executeAction(state, posting, postingEligibility, { action: "post_return", principalId: EXECUTOR, operationId: OPERATION_ID, now: now() });
     state = posted.state;
     const postedSnapshot = snapshot("posting-receipt", "synthetic/ledger", "1", "$4,800 credited once; unallocated amount cleared", {
@@ -136,7 +143,7 @@ export function createAchDemo(scenario: Scenario = "eligible"): Session {
         stateChanges: duplicate.changes, ledgerEffects: duplicate.ledger,
       });
     }
-    emit("investigator", "evidence", "Receive the execution receipts", "The investigator only learns the execution outcome when these receipts are delivered.", {}, [reopenedSnapshot, postedSnapshot]);
+    emit("investigator", "evidence", "Receive the execution receipts", "The investigator only learns the execution outcome when these receipts are delivered.", {}, [reopenedSnapshot, postedSnapshot], EXECUTOR);
     emit("investigator", "checkpoint", "Exception resolved with linked evidence", "The return is credited once. Account access remains restricted; any later payout or full reopening is a separate bank process.");
   }
   return {
