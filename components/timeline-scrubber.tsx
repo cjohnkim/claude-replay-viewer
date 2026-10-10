@@ -27,10 +27,13 @@ export function TimelineScrubber({
   const startMs = new Date(session.startedAt).getTime();
   const endMs = new Date(session.endedAt).getTime();
   const span = Math.max(1, endMs - startMs);
+  const selected = session.events[selectedIndex];
+  if (!selected) return <div className="border-t border-line p-4 text-ink-muted">No events to replay.</div>;
+  const progress = Math.max(0, Math.min(100, (Date.parse(selected.timestamp) - startMs) / span * 100));
 
   return (
     <div className="border-t border-line bg-bg-panel/80 backdrop-blur">
-      <div className="flex items-center gap-2 px-4 py-2">
+      <div className="flex flex-wrap items-center gap-2 px-4 py-2">
         <Button variant="ghost" size="icon" onClick={() => onSelect(0)} title="Jump to start">
           <ChevronsLeft size={14} />
         </Button>
@@ -83,7 +86,7 @@ export function TimelineScrubber({
           {/* Progress */}
           <div
             className="absolute left-0 top-1/2 -translate-y-1/2 h-1 rounded-full bg-gradient-to-r from-accent/80 to-accent-glow"
-            style={{ width: `${(selectedIndex / Math.max(1, last)) * 100}%` }}
+            style={{ width: `${progress}%` }}
           />
           {/* Event ticks */}
           {session.events.map((ev, i) => {
@@ -104,6 +107,8 @@ export function TimelineScrubber({
                 )}
                 style={{ left: `${pct}%` }}
                 title={`${meta.label} · ${ev.title}`}
+                aria-label={`Go to event ${ev.sequenceNumber}: ${ev.title}`}
+                aria-current={isSelected ? "step" : undefined}
               >
                 <EventIcon type={ev.type} className="h-3 w-3" />
                 {/* Hover tooltip */}

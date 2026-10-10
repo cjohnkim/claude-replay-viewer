@@ -33,3 +33,7 @@ yarn-error.log*
 
 # tests
 /coverage
+
+# browser test output
+/test-results/
+/playwright-report/

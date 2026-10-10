@@ -6,6 +6,7 @@ import { StagePanel } from "./stage-panel";
 import { FileTree } from "./file-tree";
 import { DiffViewer } from "./diff-viewer";
 import { TimelineScrubber } from "./timeline-scrubber";
+import { useReplayPlayback } from "./use-replay-playback";
 import { SessionSummary } from "./session-summary";
 import { Button } from "./ui/button";
 import { Badge } from "./ui/badge";
@@ -46,17 +47,8 @@ export function ReplayViewer({ session }: Props) {
     if (first) setSelectedFile(first.filePath);
   }, [selectedIndex, session]);
 
-  // Play loop — advances to next event on an interval scaled by speed and event spacing.
-  React.useEffect(() => {
-    if (!playing) return;
-    if (selectedIndex >= last) { setPlaying(false); return; }
-    const cur = new Date(session.events[selectedIndex].timestamp).getTime();
-    const next = new Date(session.events[selectedIndex + 1].timestamp).getTime();
-    const realGap = Math.max(400, Math.min(2400, (next - cur) / 4)); // compress gaps
-    const wait = realGap / speed;
-    const t = setTimeout(() => setSelectedIndex((i) => Math.min(i + 1, last)), wait);
-    return () => clearTimeout(t);
-  }, [playing, selectedIndex, last, session.events, speed]);
+  const stopPlayback = React.useCallback(() => setPlaying(false), []);
+  useReplayPlayback(session.events, selectedIndex, playing, speed, setSelectedIndex, stopPlayback);
 
   // Keyboard
   React.useEffect(() => {

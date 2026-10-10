@@ -1,5 +1,13 @@
 # Claude Code Replay Viewer — handoff
 
+## Current-state note: Twisp Lens demonstration
+
+The older handoff below predates real JSONL ingestion. Current `/` and `/session/[id]` routes use `lib/ingest.ts` and read `~/.claude/projects/` (or the server-only `CLAUDE_PROJECTS_DIR` override). The three coding fixtures remain available for regression tests.
+
+`/demo/ach` is a separate, entirely synthetic bank-agent demonstration. Read `docs/twisp-lens-demo.md` for its model, scenarios, checks and production limits. It reuses the transcript, timeline and extracted playback hook while keeping bank-specific inspection separate. `npm run check`, `npm run build` and `npm run test:e2e` are the verification commands. No bank/model credentials are needed.
+
+## Original prototype notes (historical)
+
 A polished Next.js prototype that rerun a Claude Code session as an interactive
 timeline. The pitch: intercut prompts, Claude responses, tool actions, file
 diffs, snapshots, and checkpoints so a user can see exactly how a shipped

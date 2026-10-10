@@ -1,5 +1,5 @@
-// Data model for the Claude Code Replay Viewer.
-// Designed so real Claude Code logs can be mapped into this shape later.
+// Shared replay envelope. Agent trace fields are optional for Claude JSONL compatibility.
+import type { AgentTrace, AgentEventContext } from "./agent-trace";
 
 export type EventType =
   | "user_prompt"
@@ -11,7 +11,11 @@ export type EventType =
   | "snapshot"
   | "checkpoint"
   | "commit"
-  | "artifact";
+  | "artifact"
+  | "evidence"
+  | "policy_decision"
+  | "state_change"
+  | "ledger_posting";
 
 export type FeatureStatus =
   | "not_started"
@@ -78,6 +82,8 @@ export interface ReplayEvent {
   description?: string;
   /** Main text payload — prompt body, assistant message, command stdout, etc. */
   content?: string;
+  /** Exact recorded inputs, authority and effects; never inferred from later events. */
+  agent?: AgentEventContext;
   relatedFilePaths?: string[];
   diffIds?: string[];      // FileChange ids
   snapshotIds?: string[];  // Snapshot ids
@@ -102,6 +108,8 @@ export interface Project {
 
 export interface Session {
   id: string;
+  /** Present only for an agent trace. Existing Claude sessions need no migration. */
+  agentTrace?: AgentTrace;
   /** Which project this session belongs to. */
   project: Project;
   title: string;
