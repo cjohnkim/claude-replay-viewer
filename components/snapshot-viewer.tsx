@@ -60,6 +60,8 @@ function SnapshotImage({ snap, caption }: { snap: Snapshot; caption?: string }) 
   if (snap.imageUrl) {
     return (
       <div className="relative aspect-video bg-bg">
+        {/* Replay images may be arbitrary local/data URLs; preserve the original source. */}
+        {/* eslint-disable-next-line @next/next/no-img-element */}
         <img src={snap.imageUrl} alt={snap.title} className="h-full w-full object-cover" />
         {caption && <Caption>{caption}</Caption>}
       </div>

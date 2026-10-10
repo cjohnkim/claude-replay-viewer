@@ -12,7 +12,7 @@ import type {
 } from "./types";
 import { scoreMarkers, MARKER_CATEGORIES, type MarkerCategory } from "./markers";
 
-const ROOT = join(homedir(), ".claude", "projects");
+const ROOT = process.env.CLAUDE_PROJECTS_DIR ?? join(homedir(), ".claude", "projects");
 
 interface RawLine {
   type?: string;
@@ -42,10 +42,10 @@ type RawContentBlock =
   | { type: "tool_use"; id: string; name: string; input: Record<string, unknown> }
   | { type: "tool_result"; tool_use_id: string; content?: unknown; is_error?: boolean };
 
-export async function loadAllSessions(): Promise<Session[]> {
+export async function loadAllSessions(root = ROOT): Promise<Session[]> {
   let dirs;
   try {
-    dirs = await readdir(ROOT, { withFileTypes: true });
+    dirs = await readdir(root, { withFileTypes: true });
   } catch {
     return [];
   }
@@ -53,7 +53,7 @@ export async function loadAllSessions(): Promise<Session[]> {
   const out: Session[] = [];
   for (const d of dirs) {
     if (!d.isDirectory()) continue;
-    const projDir = join(ROOT, d.name);
+    const projDir = join(root, d.name);
     let files: string[];
     try {
       files = await readdir(projDir);
@@ -77,7 +77,7 @@ export async function loadAllSessions(): Promise<Session[]> {
   );
 }
 
-function parseSession(text: string, dirName: string, sessionId: string): Session | null {
+export function parseSession(text: string, dirName: string, sessionId: string): Session | null {
   const lines = text.split("\n");
   const raw: RawLine[] = [];
   for (const line of lines) {

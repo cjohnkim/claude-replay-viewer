@@ -6,6 +6,7 @@ import { Badge } from "./ui/badge";
 import { cn, formatClock } from "@/lib/utils";
 import { ChevronRight, Search } from "lucide-react";
 import { MARKER_CATEGORIES, MARKER_META, type MarkerCategory } from "@/lib/markers";
+import { matchesAgent } from "@/lib/agent-trace";
 
 interface Props {
   session: Session;
@@ -14,6 +15,8 @@ interface Props {
   filterTypes: Set<string>;
   search: string;
   onSearchChange: (s: string) => void;
+  agentId?: string;
+  scrollWithinPanel?: boolean;
 }
 
 export function TranscriptPanel({
@@ -23,10 +26,13 @@ export function TranscriptPanel({
   filterTypes,
   search,
   onSearchChange,
+  agentId = "",
+  scrollWithinPanel = false,
 }: Props) {
   const [expanded, setExpanded] = React.useState<Record<string, boolean>>({});
   const [markerFilter, setMarkerFilter] = React.useState<Set<MarkerCategory>>(new Set());
   const itemRefs = React.useRef<Record<string, HTMLButtonElement | null>>({});
+  const scrollRef = React.useRef<HTMLDivElement | null>(null);
 
   // Build a lookup: event id -> ordered list of marker categories it triggered.
   const eventMarkers = React.useMemo(() => {
@@ -46,8 +52,15 @@ export function TranscriptPanel({
     const ev = session.events[selectedIndex];
     if (!ev) return;
     const el = itemRefs.current[ev.id];
-    el?.scrollIntoView({ behavior: "smooth", block: "nearest" });
-  }, [selectedIndex, session.events]);
+    if (scrollWithinPanel && el && scrollRef.current) {
+      const panel = scrollRef.current;
+      const bounds = panel.getBoundingClientRect();
+      const item = el.getBoundingClientRect();
+      const delta = item.top < bounds.top ? item.top - bounds.top - 12
+        : item.bottom > bounds.bottom ? item.bottom - bounds.bottom + 12 : 0;
+      if (delta) panel.scrollBy({ top: delta, behavior: "smooth" });
+    } else el?.scrollIntoView({ behavior: "smooth", block: "nearest" });
+  }, [selectedIndex, session.events, scrollWithinPanel]);
 
   const toggleMarker = React.useCallback((c: MarkerCategory) => {
     setMarkerFilter((prev) => {
@@ -76,6 +89,7 @@ export function TranscriptPanel({
 
   const lower = search.trim().toLowerCase();
   const visible = session.events.filter((e) => {
+    if (!matchesAgent(e, agentId)) return false;
     if (filterTypes.size > 0 && !filterTypes.has(e.type)) return false;
     if (markerFilter.size > 0) {
       const cats = eventMarkers[e.id];
@@ -113,6 +127,7 @@ export function TranscriptPanel({
         <label className="flex items-center gap-2 rounded-md border border-line bg-bg-subtle px-2 py-1.5 focus-within:border-accent/40">
           <Search size={13} className="text-ink-faint" />
           <input
+            aria-label="Search transcript"
             value={search}
             onChange={(e) => onSearchChange(e.target.value)}
             placeholder="Search transcript…"
@@ -167,7 +182,8 @@ export function TranscriptPanel({
         </div>
       )}
 
-      <div className="scroll-fade-y flex-1 overflow-y-auto px-2 py-3">
+      <div ref={scrollRef} className="scroll-fade-y flex-1 overflow-y-auto px-2 py-3">
+        {visible.length === 0 && <p className="p-3 text-sm text-ink-muted">No events match these filters.</p>}
         <ol className="relative space-y-1.5">
           <span className="pointer-events-none absolute bottom-2 left-[19px] top-2 w-px bg-line-subtle" aria-hidden />
           {visible.map((ev) => {
@@ -183,6 +199,8 @@ export function TranscriptPanel({
                 <button
                   ref={(el) => { itemRefs.current[ev.id] = el; }}
                   onClick={() => onSelect(idx)}
+                  aria-current={isSelected ? "step" : undefined}
+                  data-event-id={ev.id}
                   className={cn(
                     "group relative flex w-full items-start gap-2.5 rounded-md px-2 py-2 text-left transition-colors",
                     isSelected ? "bg-bg-hover ring-1 ring-accent/40" : "hover:bg-bg-subtle"
@@ -206,7 +224,8 @@ export function TranscriptPanel({
                     <span className="mt-0.5 flex items-center gap-2 text-[10.5px] text-ink-faint">
                       <span>#{ev.sequenceNumber.toString().padStart(2, "0")}</span>
                       <span>·</span>
-                      <span>{formatClock(ev.timestamp)}</span>
+                      <span>{session.agentTrace ? `${ev.timestamp.slice(11, 19)} UTC` : formatClock(ev.timestamp)}</span>
+                      {ev.agent && <span className="text-sky-300">{session.agentTrace?.agents.find(a => a.id === ev.agent?.actorId)?.name}</span>}
                       {eventMarkers[ev.id]?.length > 0 && (
                         <span className="flex items-center gap-0.5">
                           {eventMarkers[ev.id].map((c) => (

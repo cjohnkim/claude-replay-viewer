@@ -1,4 +1,6 @@
 import {
+  BookOpen,
+  ShieldCheck,
   User,
   Bot,
   Wrench,
@@ -24,6 +26,10 @@ const map: Record<EventType, { icon: LucideIcon; color: string; label: string }>
   checkpoint:         { icon: Flag,         color: "text-amber-300",   label: "Checkpoint" },
   commit:             { icon: GitCommit,    color: "text-emerald-300", label: "Commit" },
   artifact:           { icon: Package,      color: "text-violet-300",  label: "Artifact" },
+  evidence:           { icon: BookOpen,     color: "text-sky-300",     label: "Evidence" },
+  policy_decision:    { icon: ShieldCheck,  color: "text-amber-300",   label: "Policy" },
+  state_change:       { icon: GitCommit,    color: "text-pink-300",    label: "State" },
+  ledger_posting:     { icon: CheckCircle2, color: "text-emerald-300", label: "Ledger" },
 };
 
 export function eventMeta(type: EventType) { return map[type]; }
